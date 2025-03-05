@@ -1,0 +1,51 @@
+<?php
+
+class TransaksiInApi_model extends CI_Model {
+	public function getTransaksiIn($id = NULL) {
+		if ($id === null) {
+			$query = $this->db->get('mst_transaksi_in')->result_array();
+		} else {
+			$query = $this->db->get_where('mst_transaksi_in', ['id' => $id])->result_array();
+		}
+		return $query;
+	}
+	public function addTransaksiIn($data) {
+		$this->db->insert('mst_transaksi_in', $data);
+		return $this->db->affected_rows();
+	}
+	
+	public function getLastTransaksiIn() {
+        $this->db->select('no_transaksi_in');
+        $this->db->order_by('id', 'DESC');
+        $query = $this->db->get('mst_transaksi_in', 1);
+        return $query->row_array();
+    }
+
+	public function getDetail($id = NULL) {
+		if ($id === null) {
+			$query = $this->db->get('mst_det_transaksi_in')->result_array();
+		} else {
+			$query = $this->db->get_where('mst_det_transaksi_in', ['id' => $id])->result_array();
+		}
+		return $query;
+	}
+	public function addDetail($data) {
+		$this->db->insert('mst_det_transaksi_in', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function getPembayaran($id = NULL) {
+		if ($id === null) {
+			$query = $this->db->get('lib_metode_pembayaran')->result_array();
+		} else {
+			$query = $this->db->get_where('lib_metode_pembayaran', ['id' => $id])->result_array();
+		}
+		return $query;
+	}
+
+	public function addPembayaran($data) {
+		$this->db->insert('lib_metode_pembayaran', $data);
+		return $this->db->affected_rows();
+	}
+
+}
