@@ -17,7 +17,8 @@ class TransaksiOutApi_model extends CI_Model {
 	public function getLastTransaksiOut() {
         $this->db->select('no_transaksi_out');
         $this->db->order_by('id', 'DESC');
-        $query = $this->db->get('mst_transaksi_out', 1);
+        $this->db->limit(1);
+        $query = $this->db->get('mst_transaksi_out');
         return $query->row_array();
     }
 

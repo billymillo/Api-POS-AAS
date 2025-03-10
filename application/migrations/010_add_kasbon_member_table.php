@@ -32,14 +32,23 @@ class Migration_Add_kasbon_member_table extends CI_Migration {
 					'constraint' => '11',
 					'unsigned' => TRUE,
 				),
-				'created_at' => array(
+				'input_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'updated_at' => array(
+				'update_tipe' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
+				'user_input' => array(
+					'type' => 'VARCHAR',
+					'null' => TRUE,
+				),
+				'user_update' => array(
+					'type' => 'VARCHAR',
+					'null' => TRUE,
+				),
+				
         ));
                 $this->dbforge->add_key('id', TRUE);
                 $this->dbforge->create_table('mst_kasbon_member');

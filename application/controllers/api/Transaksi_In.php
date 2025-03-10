@@ -135,13 +135,13 @@ class Transaksi_In extends RestController {
 		}
 		if($pembayaran) {
 			$this->response([
-			   'status' => TRUE,
+			   'status' => true,
 			   'data'   => $pembayaran,
 			   'message'=> 'Success'
 			], RestController::HTTP_OK);
 		} else {
 			$this->response([
-				'status' => FALSE,
+				'status' => false,
 				'message'=> 'Id Pembayaran In Doesnt Exist'
 			 ], RestController::HTTP_NOT_FOUND);
 		}
@@ -150,9 +150,9 @@ class Transaksi_In extends RestController {
 
 	public function pembayaran_post() {
 		$this->form_validation->set_rules('metode', 'Metode', 'required');
-		if ($this->form_validation->run() == FALSE) {
+		if ($this->form_validation->run() == false) {
 			$this->response([
-				'status' => FALSE,
+				'status' => false,
 				'message' => $this->form_validation->error_array()
 			], RestController::HTTP_BAD_REQUEST);
 			return;
@@ -162,16 +162,82 @@ class Transaksi_In extends RestController {
 		];
 		if ($this->TransaksiInApi_model->addPembayaran($data) > 0) {
 			$this->response([
-				'status' => 'true',
+				'status' => true,
 				'message' => 'Pembayaran berhasil ditambahkan',
 			], RestController::HTTP_CREATED);
 		} else {
 			$this->response([
-				'status' => 'false',
+				'status' => false,
 				'message' => 'Pembayaran gagal ditambahkan',
 			], RestController::HTTP_BAD_REQUEST);
 		}
 
+	}
+
+	public function pembayaran_put() {
+		$id = $this->put('id');
+					
+		if (!$id) {
+			$this->response([
+				'status' => false,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+		$data = [
+			'metode' => $this->put('metode'),
+			'update_date' =>  $this->put('update_date'),
+		];
+
+		if ($data['metode'] == null) {
+			$this->response([
+				   'status' => false,
+				   'message' => 'Isi Pembayaran'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+
+		if ($this->TransaksiInApi_model->editPembayaran($data, $id) > 0) {
+			$this->response([
+				   'status' => true,
+				   'message'=> 'Berhasil Mengubah Metode Pembayaran'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				   'status' => false,
+				   'message' => 'Tidak ada Perubahan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	}
+
+	public function pembayaran_delete() {
+		$id = $this->delete('id');
+	
+		if (!$id) {
+			$this->response([
+				'status' => false,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$data = [
+			'presence' => 0,
+			'update_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->delete('user_update') ?? 'system'
+		];
+	
+		if ($this->TransaksiInApi_model->deletePembayaran($data, $id)) {
+			$this->response([
+				'status' => true,
+				'message' => 'Metode Pembayaran berhasil Dihapus'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'Gagal mengubah status pembayaran'
+			], RestController::HTTP_BAD_REQUEST);
+		}
 	}
 
 }

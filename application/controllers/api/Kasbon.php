@@ -33,9 +33,8 @@ class Kasbon extends RestController {
 	}
 
 	public function index_post() {
-		$this->form_validation->set_rules('id_member', 'Pegawai Member', 'required|trim|integer');		
+		$this->form_validation->set_rules('id_member', 'Pegawai Member', 'required|trim|integer');	
 		$this->form_validation->set_rules('total_kasbon', 'Total Kasbon', 'required|trim|integer');
-		$this->form_validation->set_rules('tgl_pelunasan', 'Tanggal Pelunasan', 'required|date');	
 		$this->form_validation->set_rules('id_status', 'Opsi Status', 'required|trim|integer');	
 
 		if ($this->form_validation->run() == FALSE) {
@@ -45,11 +44,13 @@ class Kasbon extends RestController {
 			], RestController::HTTP_BAD_REQUEST);
 			return;
 		}
+		
+		$tgl_pelunasan = date('Y-m-d', strtotime('+1 month'));
 	
 		$data = [
 			'id_member' => $this->input->post('id_member'),
 			'total_kasbon' => $this->input->post('total_kasbon'),
-			'tgl_pelunasan' => $this->input->post('tgl_pelunasan'),
+			'tgl_pelunasan' => $tgl_pelunasan,
 			'id_status' => $this->input->post('id_status'),
 		];
 	

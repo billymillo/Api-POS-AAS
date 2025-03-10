@@ -54,21 +54,111 @@ class Member extends RestController {
 			'nama' => $this->input->post('nama'),
 			'id_peg_system' => $this->input->post('id_peg_system'),
 			'no_tlp' => $this->input->post('no_tlp'),
+			'saldo' => $this->input->post('saldo'),
 			'poin' => $this->input->post('poin'),
 		];
 	
 		if ($this->MemberApi_model->addMember($data) > 0) {
 			$this->response([
-				'status' => 'true',
+				'status' => true,
 				'message' => 'Member berhasil ditambahkan',
 			], RestController::HTTP_CREATED);
 		} else {
 			$this->response([
-				'status' => 'false',
+				'status' => false,
 				'message' => 'Member gagal ditambahkan',
 			], RestController::HTTP_BAD_REQUEST);
 		}
 
+	}
+
+	public function index_put() {
+		$id = $this->put('id');
+			
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID Member tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+
+		$member = $this->MemberApi_model->getMemberDataById($id);
+		if (!$member) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Member tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+
+		$data = [
+			'nama' => $this->put('nama') ?? $member['nama'],
+			'no_tlp' => $this->put('no_tlp') ?? $member['no_tlp'],
+			'saldo' => $this->put('saldo') ?? $member['saldo'],
+			'poin' => $this->put('poin') ?? $member['poin'],
+			'updated_date' => date('Y-m-d H:i:s'),
+		];
+		if ($data['nama'] == null) {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Isi Nama Member'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+		if ($data['no_tlp'] == null) {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Isi No Telepon Member'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+		if ($data['poin'] == null) {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Isi Poin Member'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+		if ($this->MemberApi_model->editMember($data, $id) > 0) {
+			$this->response([
+				   'status' => true,
+				   'message'=> 'Berhasil mengubah isi member'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Tidak Terjadi Perubahan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	}
+
+	public function index_delete() {
+		$id = $this->delete('id');
+	
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$data = [
+			'presence' => 0,
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->delete('user_update') ?? 'system'
+		];
+	
+		if ($this->MemberApi_model->deleteMember($data, $id)) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Member berhasil Dihapus'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengubah status Member'
+			], RestController::HTTP_BAD_REQUEST);
+		}
 	}
 
 	public function status_get($id = null) {

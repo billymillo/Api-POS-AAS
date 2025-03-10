@@ -21,16 +21,30 @@ class Migration_Add_member_table extends CI_Migration {
 					'type' => 'VARCHAR',
 					'constraint' => "15",	
 				),
+				'saldo' => array(
+					'type' => 'int',
+					'constraint' => '20',
+				),
 				'poin' => array(
 					'type' => 'int',
-					'constraint' => '11',
+					'constraint' => '20',
 				),
-				'created_at' => array(
+				'input_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'updated_at' => array(
+				'update_tipe' => array(
 					'type' => 'DATETIME',
+					'null' => TRUE,
+				),
+				'user_input' => array(
+					'type' => 'VARCHAR',
+					'constraint' => '255',
+					'null' => TRUE,
+				),
+				'user_update' => array(
+					'type' => 'VARCHAR',
+					'constraint' => '255',
 					'null' => TRUE,
 				),
         ));

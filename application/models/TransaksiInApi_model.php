@@ -35,6 +35,7 @@ class TransaksiInApi_model extends CI_Model {
 	}
 
 	public function getPembayaran($id = NULL) {
+		$this->db->where('presence', 1);
 		if ($id === null) {
 			$query = $this->db->get('lib_metode_pembayaran')->result_array();
 		} else {
@@ -45,6 +46,17 @@ class TransaksiInApi_model extends CI_Model {
 
 	public function addPembayaran($data) {
 		$this->db->insert('lib_metode_pembayaran', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function editPembayaran($data, $id) {
+		$this->db->update('lib_metode_pembayaran', $data, ['id' => $id]);
+		return $this->db->affected_rows();
+	}
+
+	public function deletePembayaran($data, $id) {
+		$this->db->where('id', $id);
+		$this->db->update('lib_metode_pembayaran', $data);
 		return $this->db->affected_rows();
 	}
 
