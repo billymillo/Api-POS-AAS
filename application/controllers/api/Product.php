@@ -190,6 +190,57 @@ class Product extends RestController {
 		}
 	}
 
+	public function kurang_put() {
+		$id = $this->put('id');
+		
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID produk harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$product = $this->ProductApi_model->getProductDataById($id);
+		if (!$product) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Produk tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+	
+		$stok_dikurangi = $this->put('stok') ?? 0;
+		if ($stok_dikurangi <= 0) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Jumlah stok yang dikurangi harus lebih dari 0'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$stok_baru = max(0, $product['stok'] - $stok_dikurangi);
+	
+		$data = [
+			'stok' => $stok_baru ?? $product['stok'],
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_input' => $this->input->post('user_input'),
+		];
+	
+		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Stok berhasil dikurangi',
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengupdate stok'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+	
+
 	public function index_delete() {
 		$id = $this->delete('id');
 	

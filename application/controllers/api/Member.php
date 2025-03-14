@@ -99,24 +99,7 @@ class Member extends RestController {
 			'poin' => $this->put('poin') ?? $member['poin'],
 			'updated_date' => date('Y-m-d H:i:s'),
 		];
-		if ($data['nama'] == null) {
-			$this->response([
-				   'status' => FALSE,
-				   'message' => 'Isi Nama Member'
-			], RestController::HTTP_BAD_REQUEST);
-		}
-		if ($data['no_tlp'] == null) {
-			$this->response([
-				   'status' => FALSE,
-				   'message' => 'Isi No Telepon Member'
-			], RestController::HTTP_BAD_REQUEST);
-		}
-		if ($data['poin'] == null) {
-			$this->response([
-				   'status' => FALSE,
-				   'message' => 'Isi Poin Member'
-			], RestController::HTTP_BAD_REQUEST);
-		}
+
 		if ($this->MemberApi_model->editMember($data, $id) > 0) {
 			$this->response([
 				   'status' => true,

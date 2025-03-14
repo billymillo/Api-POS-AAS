@@ -34,7 +34,7 @@ class Kasbon extends RestController {
 
 	public function index_post() {
 		$this->form_validation->set_rules('id_member', 'Pegawai Member', 'required|trim|integer');	
-		$this->form_validation->set_rules('total_kasbon', 'Total Kasbon', 'required|trim|integer');
+		$this->form_validation->set_rules('total_kasbon', 'Total Kasbon', 'required|trim');
 		$this->form_validation->set_rules('id_status', 'Opsi Status', 'required|trim|integer');	
 
 		if ($this->form_validation->run() == FALSE) {
@@ -56,12 +56,12 @@ class Kasbon extends RestController {
 	
 		if ($this->KasbonApi_model->addKasbon($data) > 0) {
 			$this->response([
-				'status' => 'true',
+				'status' => true,
 				'message' => 'Kasbon berhasil ditambahkan',
-			], RestController::HTTP_CREATED);
+			], RestController::HTTP_OK);
 		} else {
 			$this->response([
-				'status' => 'false',
+				'status' => false,
 				'message' => 'Kasbon gagal ditambahkan',
 			], RestController::HTTP_BAD_REQUEST);
 		}
