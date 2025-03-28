@@ -50,7 +50,7 @@ class Transaksi_Out extends RestController {
 			return;
 		}
 	
-		$last_transaksi = $this->TransaksiOutApi_model->getLastTransaksiOut();
+		$last_transaksi = $this->TransaksiOutApi_model->getNoTransaksiOut();
 		if ($last_transaksi) {
 			preg_match('/TRN-OUT(\d+)\d{6}$/', $last_transaksi['no_transaksi_out'], $matches);
 			$i = isset($matches[1]) ? (int)$matches[1] + 1 : 1;
@@ -84,28 +84,77 @@ class Transaksi_Out extends RestController {
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}
-	
 
-	public function detail_get($id = null) {
-		$id = $this->get('id');
-		if($id == null) {
-			$transaksiOut = $this->TransaksiOutApi_model->getDetail();
-		} else {
-			$transaksiOut = $this->TransaksiOutApi_model->getDetail($id);
-		}
-		if($transaksiOut) {
+	public function index_put() {
+		$id = $this->put('id');
+	
+		if (!$id) {
 			$this->response([
-			   'status' => TRUE,
-			   'data'   => $transaksiOut,
-			   'message'=> 'Success'
+				'status' => FALSE,
+				'message' => 'ID Transaksi harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$transaksi = $this->TransaksiOutApi_model->getTransaksiDataById($id);
+		if (!$transaksi) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Transaksi tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+		
+		$data = [
+			'id_member' => $this->put('id_member') ?? $transaksi['id_member'],
+			'jumlah_produk' => $this->put('jumlah_produk')  ?? $transaksi['jumlah_produk'],
+			'id_metode_pembayaran' => $this->put('id_metode_pembayaran') ?? $transaksi['id_metode_pembayaran'],
+			'total_transaksi' => $this->put('total_transaksi') + $transaksi['total_transaksi'] ?? $transaksi['total_transaksi'],
+			'diskon' => $this->put('diskon') ?? $transaksi['diskon'],
+			'status_transaksi' => $this->put('status_transaksi') ?? $transaksi['status_transaksi'],
+			'potongan_poin' => $this->put('potongan_poin') ?? $transaksi['potongan_poin'],
+			'mendapatkan_poin' => $this->put('mendapatkan_poin') ?? $transaksi['mendapatkan_poin'],
+			'user_update' => $this->put('user_update') ?? $transaksi['user_update'],
+			'updated_date' => date('Y-m-d H:i:s'),
+		];
+	
+		if ($this->TransaksiOutApi_model->editTransaksiOut($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Berhasil Mengubah Transaksi'
 			], RestController::HTTP_OK);
 		} else {
 			$this->response([
 				'status' => FALSE,
-				'message'=> 'Id status Doesnt Exist'
-			 ], RestController::HTTP_NOT_FOUND);
+				'message' => 'Gagal Mengubah Transaksi'
+			], RestController::HTTP_BAD_REQUEST);
 		}
 	}
+	
+	public function detail_get($id = null) {
+		$id = $this->get('id');
+		$produk = $this->get('produk');
+		
+		if ($id == null) {
+			$transaksiOut = $this->TransaksiOutApi_model->getDetail(null, $produk);
+		} else {
+			$transaksiOut = $this->TransaksiOutApi_model->getDetail($id, $produk);
+		}
+		
+		if ($transaksiOut) {
+			$this->response([
+				'status' => TRUE,
+				'data'   => $transaksiOut,
+				'message'=> 'Success'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message'=> 'Detail Transaksi Tidak Ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+		}
+	}
+	
 
 	public function detail_post() {
 		$this->form_validation->set_rules('id_produk', 'Produk Id', 'required|trim|integer');
@@ -122,7 +171,7 @@ class Transaksi_Out extends RestController {
 		}
 	
 		$last_transaksi = $this->TransaksiOutApi_model->getLastTransaksiOutId();
-		$id_transaksi_out = $last_transaksi ? $last_transaksi['id'] : null;
+		$id_transaksi_out = $last_transaksi ? $last_transaksi['id'] : 1;
 	
 		$harga_satuan = $this->input->post('harga_satuan');
 		$harga_jual = $this->input->post('harga_jual');

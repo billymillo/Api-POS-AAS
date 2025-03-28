@@ -43,16 +43,20 @@ class Transaksi_In extends RestController {
             return;
         }
 
-        $last_transaksi = $this->TransaksiInApi_model->getLastTransaksiIn(); 
+        $last_transaksi = $this->TransaksiInApi_model->getNoTransaksiIn();
+		if ($last_transaksi) {
+			preg_match('/TRN-IN(\d+)\d{6}$/', $last_transaksi['no_transaksi_in'], $matches);
+			$i = isset($matches[1]) ? (int)$matches[1] + 1 : 1;
+		} else {
+			$i = 1;
+		}
 
-        $i = ($last_transaksi) ? (int)substr($last_transaksi['no_transaksi_in'], 3, 3) : 0;
-		$i++;
-        $no_transaksi_in = 'TRN-IN' . str_pad($i, 3, '0', STR_PAD_LEFT) . date('dmy');
-
+		$no_transaksi_in = 'TRN-IN' . str_pad($i, 3, '0', STR_PAD_LEFT) . date('dmy');
         $data = [
             'no_transaksi_in' => $no_transaksi_in,
             'jumlah_produk' => $this->input->post('jumlah_produk'),
             'total_transaksi' => $this->input->post('total_transaksi'),
+			'user_input' => $this->input->post('user_input'),
         ];
 
         if ($this->TransaksiInApi_model->addTransaksiIn($data) > 0) {
@@ -71,14 +75,14 @@ class Transaksi_In extends RestController {
 	public function detail_get($id = null) {
 		$id = $this->get('id');
 		if($id == null) {
-			$transaksiIn = $this->TransaksiInApi_model->getDetail();
+			$transaksiDet = $this->TransaksiInApi_model->getDetail();
 		} else {
-			$transaksiIn = $this->TransaksiInApi_model->getDetail($id);
+			$transaksiDet = $this->TransaksiInApi_model->getDetail($id);
 		}
-		if($transaksiIn) {
+		if($transaksiDet) {
 			$this->response([
 			   'status' => TRUE,
-			   'data'   => $status,
+			   'data'   => $transaksiDet,
 			   'message'=> 'Success'
 			], RestController::HTTP_OK);
 		} else {
@@ -90,12 +94,11 @@ class Transaksi_In extends RestController {
 	}
 
 	public function detail_post() {
-		$this->form_validation->set_rules('id_transaksi_in', 'Transaksi Info', 'required|trim|integer');
 		$this->form_validation->set_rules('id_produk', 'Produk Info', 'required|trim|integer');
 		$this->form_validation->set_rules('jumlah', 'Jumlah Transaksi', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan', 'required|trim|integer');
-		$this->form_validation->set_rules('total_harga', 'Total Harga', 'required|trim|integer');
-		$this->form_validation->set_rules('tgl_expired', 'Tanggal Expired', 'required|date');
+		$this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required|trim|integer');
+
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->response([
@@ -104,13 +107,21 @@ class Transaksi_In extends RestController {
 			], RestController::HTTP_BAD_REQUEST);
 			return;
 		}
+		$last_transaksi = $this->TransaksiInApi_model->getLastTransaksiInId();
+		$id_transaksi_in = $last_transaksi ? $last_transaksi['id'] : 1;
+
+		$harga_satuan = $this->input->post('harga_satuan');
+		$jumlah = $this->input->post('jumlah');
+		$total = $harga_satuan * $jumlah;
+
 		$data = [
-			'id_transaksi_in' => $this->input->post('id_transaksi_in'),
+			'id_transaksi_in' => $id_transaksi_in,
 			'id_produk' => $this->input->post('id_produk'),
-			'jumlah' => $this->input->post('jumlah'),
-			'harga_satuan' => $this->input->post('harga_satuan'),
-			'total_harga' => $this->input->post('total_harga'),
-			'tgl_expired' => $this->input->post('tgl_expired'),
+			'jumlah' => $jumlah,
+			'harga_satuan' => $harga_satuan,
+			'harga_jual' => $this->input->post('harga_jual'),
+			'total_harga' => $total,
+			'user_input' => $this->input->post('user_input'),
 		];
 		if ($this->TransaksiInApi_model->addDetail($data) > 0) {
 			$this->response([

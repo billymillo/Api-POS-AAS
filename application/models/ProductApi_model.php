@@ -10,7 +10,7 @@ class ProductApi_model extends CI_Model {
 			'mst_produk.*, lib_kategori.kategori as kategori_name, mst_mitra.nama as mitra_name, lib_tipe.tipe as tipe_name'
 		);
 		if ($id === null) {
-			$this->db->limit($limit, $offset);
+			$this->db->limit($limit, $offset); 
 			$query = $this->db->get('mst_produk');
 		} else {
 			$this->db->where('mst_produk.id', $id);

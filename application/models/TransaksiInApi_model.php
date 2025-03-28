@@ -14,12 +14,21 @@ class TransaksiInApi_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 	
-	public function getLastTransaksiIn() {
+	public function getNoTransaksiIn() {
         $this->db->select('no_transaksi_in');
         $this->db->order_by('id', 'DESC');
-        $query = $this->db->get('mst_transaksi_in', 1);
+        $this->db->limit(1);
+        $query = $this->db->get('mst_transaksi_in');
         return $query->row_array();
     }
+
+	public function getLastTransaksiInId() {
+		$this->db->select('id');
+		$this->db->order_by('id', 'DESC');
+		$this->db->limit(1);
+		$query = $this->db->get('mst_transaksi_in');
+		return $query->row_array();
+	}
 
 	public function getDetail($id = NULL) {
 		if ($id === null) {

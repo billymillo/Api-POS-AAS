@@ -39,8 +39,6 @@ class Product extends RestController {
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required|trim');
 		$this->form_validation->set_rules('id_kategori_barang', 'Kategori Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('id_tipe_barang', 'Tipe Barang', 'required|trim|integer');
-		$this->form_validation->set_rules('harga_pack', 'Harga Pack Barang', 'required|trim|integer');
-		$this->form_validation->set_rules('jml_pcs_pack', 'Jumlah Isi Pack', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('stok', 'Stok Barang', 'required|trim|integer');
@@ -120,6 +118,72 @@ class Product extends RestController {
 		], RestController::HTTP_BAD_REQUEST);
 	}
 
+	public function duplicate_post() {
+		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
+		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
+		$this->form_validation->set_rules('stok', 'Stok Barang', 'required|trim|integer');
+
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+		} else {
+			$errors = [];
+		}
+
+		if (!empty($errors)) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Lengkapi Data Produk Terlebih Dahulu!'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+		$id = $this->input->post('id');
+
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID produk harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$product = $this->ProductApi_model->getProductDataById($id);
+
+		if (!$product) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Produk tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+	
+		$data = [
+			'nama_barang' => $product['nama_barang'],
+			'gambar_barang' => $product['gambar_barang'],
+			'id_kategori_barang' => $product['id_kategori_barang'],
+			'id_tipe_barang' => $product['id_tipe_barang'],
+			'id_mitra_barang' => $product['id_mitra_barang'],
+			'harga_pack' => $product['harga_pack'],
+			'jml_pcs_pack' => $product['jml_pcs_pack'],
+			'harga_satuan' => $this->input->post('harga_satuan'),
+			'harga_jual' => $this->input->post('harga_jual'),
+			'stok' => $this->input->post('stok') ?? $product['stok'],
+			'laba' => ($this->input->post('harga_jual') ?? $product['harga_jual']) - ($this->input->post('harga_satuan') ?? $product['harga_satuan']),
+			'updated_date' => date('Y-m-d H:i:s'),
+		];
+	
+		if ($this->ProductApi_model->addProduct($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Berhasil menambahkan produk'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal menambahkan produk'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
 	public function index_put() {
 		$id = $this->input->post('id'); // Gunakan POST karena dikirim sebagai form-data
 	
@@ -174,6 +238,7 @@ class Product extends RestController {
 			'harga_jual' => $this->input->post('harga_jual') ?? $product['harga_jual'],
 			'stok' => $this->input->post('stok') ?? $product['stok'],
 			'laba' => ($this->input->post('harga_jual') ?? $product['harga_jual']) - ($this->input->post('harga_satuan') ?? $product['harga_satuan']),
+			'user_input' => $this->input->post('user_input'),
 			'updated_date' => date('Y-m-d H:i:s'),
 		];
 	
@@ -186,6 +251,64 @@ class Product extends RestController {
 			$this->response([
 				'status' => FALSE,
 				'message' => 'Gagal mengupdate produk'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
+
+	public function ubah_put() {
+		$id = $this->put('id');
+		
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID produk harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$product = $this->ProductApi_model->getProductDataById($id);
+		if (!$product) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Produk tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+	
+		$data = [
+			'nama_barang' => $this->put('nama_barang') ?? $product['nama_barang'],
+			'gambar_barang' => $this->put('gambar_barang') ?? $product['gambar_barang'],
+			'id_kategori_barang' => $this->put('id_kategori_barang') ?? $product['id_kategori_barang'],
+			'id_tipe_barang' => $this->put('id_tipe_barang') ?? $product['id_tipe_barang'],
+			'id_mitra_barang' => $this->put('id_mitra_barang') ?? $product['id_mitra_barang'],
+			'harga_pack' => $this->put('harga_pack') ?? $product['harga_pack'],
+			'jml_pcs_pack' => $this->put('jml_pcs_pack') ?? $product['jml_pcs_pack'],
+			'harga_satuan' => $this->put('harga_satuan') ?? $product['harga_satuan'],
+			'harga_jual' => $this->put('harga_jual') ?? $product['harga_jual'],
+			'stok' => $this->put('stok') ?? $product['stok'],
+			'laba' => ($this->put('harga_jual') ?? $product['harga_jual']) - ($this->put('harga_satuan') ?? $product['harga_satuan']),			
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->input->post('user_update'),
+		];
+
+		if (!$data['stok']) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Jumlah Stok Harus Diisi'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Stok produk berhasil diperbarui',
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengupdate stok'
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}
@@ -214,7 +337,7 @@ class Product extends RestController {
 		if ($stok_dikurangi <= 0) {
 			$this->response([
 				'status' => FALSE,
-				'message' => 'Jumlah stok yang dikurangi harus lebih dari 0'
+				'message' => 'Jumlah Stok Harus Diisi'
 			], RestController::HTTP_BAD_REQUEST);
 			return;
 		}
@@ -224,13 +347,63 @@ class Product extends RestController {
 		$data = [
 			'stok' => $stok_baru ?? $product['stok'],
 			'updated_date' => date('Y-m-d H:i:s'),
-			'user_input' => $this->input->post('user_input'),
+			'user_update' => $this->input->post('user_update'),
 		];
 	
 		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
 			$this->response([
 				'status' => TRUE,
 				'message' => 'Stok berhasil dikurangi',
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengupdate stok'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
+	public function tambah_put() {
+		$id = $this->put('id');
+		
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID produk harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$product = $this->ProductApi_model->getProductDataById($id);
+		if (!$product) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Produk tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+	
+		$stok_tambah = $this->put('stok') ?? 0;
+		if ($stok_tambah <= 0) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Jumlah stok yang ditambah harus lebih dari 0'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$stok_baru = max(0, $product['stok'] + $stok_tambah);
+	
+		$data = [
+			'stok' => $stok_baru ?? $product['stok'],
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->input->post('user_update'),
+		];
+	
+		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Stok berhasil ditambah',
 			], RestController::HTTP_OK);
 		} else {
 			$this->response([
