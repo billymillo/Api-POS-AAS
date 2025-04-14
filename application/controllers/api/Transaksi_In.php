@@ -187,7 +187,6 @@ class Transaksi_In extends RestController {
 
 	public function pembayaran_put() {
 		$id = $this->put('id');
-					
 		if (!$id) {
 			$this->response([
 				'status' => false,
@@ -199,14 +198,12 @@ class Transaksi_In extends RestController {
 			'metode' => $this->put('metode'),
 			'update_date' =>  $this->put('update_date'),
 		];
-
 		if ($data['metode'] == null) {
 			$this->response([
 				   'status' => false,
 				   'message' => 'Isi Pembayaran'
 			], RestController::HTTP_BAD_REQUEST);
 		}
-
 		if ($this->TransaksiInApi_model->editPembayaran($data, $id) > 0) {
 			$this->response([
 				   'status' => true,

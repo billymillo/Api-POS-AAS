@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_opname_table extends CI_Migration {
+class Migration_Add_pembelian_opname_table extends CI_Migration {
 
     public function up()
     {
@@ -13,22 +13,27 @@ class Migration_Add_opname_table extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'tanggal' => array(
-                'type' => 'DATETIME',
-                'null' => FALSE,
-            ),
-            'no_opname' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ),
-            'status_opname' => array(
+            'id_opname' => array(
                 'type' => 'INT',
-                'constraint' => 11,
+                'constraint' => 20,
+                'unsigned' => TRUE,
+            ),
+            'id_produk' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+            ),
+            'jumlah' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+            ),
+            'total_beli' => array(
+                'type' => 'INT',
+                'constraint' => 20,
             ),
             'input_date' => array(
                 'type' => 'DATETIME',
                 'null' => FALSE,
-                'default' => 'CURRENT_TIMESTAMP',
             ),
             'updated_date' => array(
                 'type' => 'DATETIME',
@@ -48,13 +53,17 @@ class Migration_Add_opname_table extends CI_Migration {
                 'constraint' => '255',
             ),
         ));
-
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('mst_opname', TRUE);
+        $this->dbforge->create_table('mst_pembelian_opname', TRUE);
+        $this->db->query("
+            ALTER TABLE mst_pembelian_opname 
+            MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ");
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('mst_opname', TRUE);
+        $this->dbforge->drop_table('mst_pembelian_opname', TRUE);
     }
 }

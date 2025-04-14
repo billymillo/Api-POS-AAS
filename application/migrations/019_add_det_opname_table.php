@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_opname_table extends CI_Migration {
+class Migration_Add_det_opname_table extends CI_Migration {
 
     public function up()
     {
@@ -13,22 +13,39 @@ class Migration_Add_opname_table extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'tanggal' => array(
-                'type' => 'DATETIME',
-                'null' => FALSE,
-            ),
-            'no_opname' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ),
-            'status_opname' => array(
+            'id_produk' => array(
                 'type' => 'INT',
-                'constraint' => 11,
+                'constraint' => 20,
+                'unsigned' => TRUE,
+            ),
+            'id_opname' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+                'unsigned' => TRUE,
+            ),
+            'stok' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+            ),
+            'stok_asli' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+            ),
+            'harga_satuan' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+            ),
+            'harga_jual' => array(
+                'type' => 'INT',
+                'constraint' => 20,
+            ),
+            'catatan' => array(
+                'type' => 'TEXT',
+                'null' => TRUE,
             ),
             'input_date' => array(
                 'type' => 'DATETIME',
                 'null' => FALSE,
-                'default' => 'CURRENT_TIMESTAMP',
             ),
             'updated_date' => array(
                 'type' => 'DATETIME',
@@ -48,13 +65,12 @@ class Migration_Add_opname_table extends CI_Migration {
                 'constraint' => '255',
             ),
         ));
-
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('mst_opname', TRUE);
+        $this->dbforge->create_table('mst_det_opname', TRUE);
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('mst_opname', TRUE);
+        $this->dbforge->drop_table('mst_det_opname', TRUE);
     }
 }

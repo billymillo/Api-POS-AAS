@@ -14,8 +14,8 @@ class Migration_Add_transaksi_in_table extends CI_Migration {
 					'auto_increment' => TRUE
 				),
 				'no_transaksi_in' => array(
-					'type' => 'INT',
-					'constraint' => '11',
+					'type' => 'VARCHAR',
+					'constraint' => '255',
 				),
 				'jumlah_produk' => array(
 					'type' => 'int',
