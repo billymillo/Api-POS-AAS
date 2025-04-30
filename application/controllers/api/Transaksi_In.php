@@ -170,6 +170,7 @@ class Transaksi_In extends RestController {
 		}
 		$data = [
 			'metode' => $this->input->post('metode'),
+			'user_input' => $this->input->post('user_input')
 		];
 		if ($this->TransaksiInApi_model->addPembayaran($data) > 0) {
 			$this->response([

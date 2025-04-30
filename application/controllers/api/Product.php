@@ -39,6 +39,7 @@ class Product extends RestController {
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required|trim');
 		$this->form_validation->set_rules('id_kategori_barang', 'Kategori Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('id_tipe_barang', 'Tipe Barang', 'required|trim|integer');
+		$this->form_validation->set_rules('id_add_on', 'Add On Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('stok', 'Stok Barang', 'required|trim|integer');
@@ -85,6 +86,7 @@ class Product extends RestController {
 			'id_kategori_barang' => $this->input->post('id_kategori_barang'),
 			'id_tipe_barang' => $this->input->post('id_tipe_barang'),
 			'id_mitra_barang' => $this->input->post('id_mitra_barang'),
+			'id_add_on' => $this->input->post('id_add_on'),
 			'harga_pack' => $this->input->post('harga_pack'),
 			'jml_pcs_pack' => $this->input->post('jml_pcs_pack'),
 			'harga_satuan' => $this->input->post('harga_satuan'),
@@ -107,7 +109,6 @@ class Product extends RestController {
 	}
 	
 	public function edit_post() {
-		// Cek apakah request memiliki _method=PUT
 		if ($this->input->get('_method') === 'PUT') {
 			return $this->index_put();
 		}
@@ -162,6 +163,7 @@ class Product extends RestController {
 			'id_kategori_barang' => $product['id_kategori_barang'],
 			'id_tipe_barang' => $product['id_tipe_barang'],
 			'id_mitra_barang' => $product['id_mitra_barang'],
+			'id_add_on' => $product['id_add_on'],
 			'harga_pack' => $product['harga_pack'],
 			'jml_pcs_pack' => $product['jml_pcs_pack'],
 			'harga_satuan' => $this->input->post('harga_satuan'),
@@ -185,7 +187,7 @@ class Product extends RestController {
 	}
 
 	public function index_put() {
-		$id = $this->input->post('id'); // Gunakan POST karena dikirim sebagai form-data
+		$id = $this->input->post('id');
 	
 		if (!$id) {
 			$this->response([
@@ -232,13 +234,14 @@ class Product extends RestController {
 			'id_kategori_barang' => $this->input->post('id_kategori_barang') ?? $product['id_kategori_barang'],
 			'id_tipe_barang' => $this->input->post('id_tipe_barang') ?? $product['id_tipe_barang'],
 			'id_mitra_barang' => $this->input->post('id_mitra_barang') ?? $product['id_mitra_barang'],
+			'id_add_on' => $this->input->post('id_add_on') ?? $product['id_add_on'],
 			'harga_pack' => $this->input->post('harga_pack') ?? $product['harga_pack'],
 			'jml_pcs_pack' => $this->input->post('jml_pcs_pack') ?? $product['jml_pcs_pack'],
 			'harga_satuan' => $this->input->post('harga_satuan') ?? $product['harga_satuan'],
 			'harga_jual' => $this->input->post('harga_jual') ?? $product['harga_jual'],
 			'stok' => $this->input->post('stok') ?? $product['stok'],
 			'laba' => ($this->input->post('harga_jual') ?? $product['harga_jual']) - ($this->input->post('harga_satuan') ?? $product['harga_satuan']),
-			'user_input' => $this->input->post('user_input'),
+			'user_input' => $this->input->post('user_input') ?? 'system',
 			'updated_date' => date('Y-m-d H:i:s'),
 		];
 	
@@ -282,6 +285,7 @@ class Product extends RestController {
 			'id_kategori_barang' => $this->put('id_kategori_barang') ?? $product['id_kategori_barang'],
 			'id_tipe_barang' => $this->put('id_tipe_barang') ?? $product['id_tipe_barang'],
 			'id_mitra_barang' => $this->put('id_mitra_barang') ?? $product['id_mitra_barang'],
+			'id_add_on' => $this->put('id_add_on') ?? $product['id_add_on'],
 			'harga_pack' => $this->put('harga_pack') ?? $product['harga_pack'],
 			'jml_pcs_pack' => $this->put('jml_pcs_pack') ?? $product['jml_pcs_pack'],
 			'harga_satuan' => $this->put('harga_satuan') ?? $product['harga_satuan'],
@@ -289,7 +293,7 @@ class Product extends RestController {
 			'stok' => $this->put('stok') ?? $product['stok'],
 			'laba' => ($this->put('harga_jual') ?? $product['harga_jual']) - ($this->put('harga_satuan') ?? $product['harga_satuan']),			
 			'updated_date' => date('Y-m-d H:i:s'),
-			'user_update' => $this->input->post('user_update'),
+			'user_update' => $this->input->post('user_update') ?? "system",
 		];
 
 		if (!$data['stok']) {
@@ -347,7 +351,7 @@ class Product extends RestController {
 		$data = [
 			'stok' => $stok_baru ?? $product['stok'],
 			'updated_date' => date('Y-m-d H:i:s'),
-			'user_update' => $this->input->post('user_update'),
+			'user_update' => $this->input->post('user_update') ?? "system",
 		];
 	
 		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
@@ -397,7 +401,7 @@ class Product extends RestController {
 		$data = [
 			'stok' => $stok_baru ?? $product['stok'],
 			'updated_date' => date('Y-m-d H:i:s'),
-			'user_update' => $this->input->post('user_update'),
+			'user_update' => $this->input->post('user_update') ?? "system",
 		];
 	
 		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
@@ -476,11 +480,12 @@ class Product extends RestController {
 		}
 			$data = [
 				'tipe' => $this->input->post('tipe'),
+				'user_input' => $this->input->post('user_input') ?? "system"
 			];
 			if ($this->ProductApi_model->addTipe($data) > 0) {
 				$this->response([
 					'status' => true,
-					'message' => 'Tipe berhasil didaftarkan'
+					'message' => 'Tipe berhasil ditambahkan'
 				], RestController::HTTP_CREATED);
 			} else {
 				$this->response([
@@ -502,7 +507,8 @@ class Product extends RestController {
 		}
 		$data = [
 			'tipe' => $this->put('tipe'),
-			'updated_date' =>  $this->put('updated_date'),
+			'updated_date' =>  date('Y-m-d H:i:s'),
+			'user_update' => $this->input->post('user_update') ?? "system",
 		];
 
 		if ($data['tipe'] == null) {
@@ -556,7 +562,6 @@ class Product extends RestController {
 		}
 	}
 	
-
 	public function mitra_get() {
 		$id = $this->get('id');
 		if($id == null) {
@@ -595,6 +600,7 @@ class Product extends RestController {
 			'nama' => $this->input->post('nama'),
 			'no_tlp' => $this->input->post('no_tlp'),
 			'email' => $this->input->post('email') ?? NULL,
+			'user_input' => $this->input->post('user_input') ?? "system"
 		];
 	
 		if ($this->ProductApi_model->addMitra($data) > 0) {
@@ -626,7 +632,7 @@ class Product extends RestController {
 			'no_tlp' => $this->put('no_tlp'),
 			'email' => $this->put('email'),
 			'updated_date' => date('Y-m-d H:i:s'),
-
+			'user_update' => $this->input->post('user_update'),
 		];
 		if ($data['nama'] == null) {
 			$this->response([
@@ -756,11 +762,12 @@ class Product extends RestController {
 			$data = [
 				'kategori' => $this->input->post('kategori'),
 				'gambar_kategori' => $data_image['file_name'],
+				'user_input' => $this->input->post('user_input') ?? "system"
 			];
 			if ($this->ProductApi_model->addKategori($data) > 0) {
 				$this->response([
 					'status' => 'true',
-					'message' => 'Kategori berhasil didaftarkan'
+					'message' => 'Kategori berhasil ditambahkan'
 				], RestController::HTTP_CREATED);
 			} else {
 				$this->response([
@@ -827,6 +834,7 @@ class Product extends RestController {
 			'kategori' => $this->input->post('kategori') ?? $kategori['kategori'],
 			'gambar_kategori' => $gambar_kategori ?? $kategori['gambar_kategori'],
 			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->input->post('user_update') ?? "system",
 		];
 
 		if ($data['kategori'] == null) {
@@ -875,6 +883,129 @@ class Product extends RestController {
 			$this->response([
 				'status' => FALSE,
 				'message' => 'Gagal mengubah status Kategori'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
+	public function add_on_get() {
+		$id = $this->get('id');
+		
+		if($id == null) {
+			$addOn = $this->ProductApi_model->getAddOn();
+		} else {
+			$addOn = $this->ProductApi_model->getAddOn($id);
+		}
+		if($addOn) {
+			$this->response([
+			   'status' => true,
+			   'data'   => $addOn,
+			   'message'=> 'Success'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => false,
+				'message'=> 'Id Add On Doesnt Exist'
+			 ], RestController::HTTP_NOT_FOUND);
+		}
+	}
+	public function add_on_post() {
+		$this->form_validation->set_rules('add_on', 'Add On', 'required|trim');
+		$this->form_validation->set_rules('harga', 'Harga', 'required|numeric');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->response([
+				'status' => false,
+				'message' => 'Lengkapi data Add On'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+			$data = [
+				'add_on' => $this->input->post('add_on'),
+				'harga' => $this->input->post('harga'),
+				'user_input' => $this->input->post('user_input') ?? 'system',
+			];
+			if ($this->ProductApi_model->addAddOn($data) > 0) {
+				$this->response([
+					'status' => true,
+					'message' => 'Add On berhasil ditambahkan'
+				], RestController::HTTP_CREATED);
+			} else {
+				$this->response([
+					'status' => false,
+					'message' => 'Add On gagal dibuat'
+				], RestController::HTTP_NOT_FOUND);
+			}
+	}
+
+	public function add_on_put() {
+		$id = $this->put('id');
+					
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+		$data = [
+			'add_on' => $this->put('add_on'),
+			'harga' => $this->put('harga'),
+			'updated_date' =>  date('Y-m-d H:i:s'),
+			'user_update' => $this->input->post('user_update') ?? 'system',
+		];
+
+		if ($data['add_on'] == null) {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Isi Add On'
+			], RestController::HTTP_BAD_REQUEST);
+		} else if ($data['harga'] == null) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Isi Harga'
+		 	], RestController::HTTP_BAD_REQUEST);
+		}
+
+		if ($this->ProductApi_model->editAddOn($data, $id) > 0) {
+			$this->response([
+				   'status' => true,
+				   'message'=> 'Berhasil Mengubah Add On'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Tidak ada Perubahan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	}
+
+	public function add_on_delete() {
+		$id = $this->delete('id');
+	
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$data = [
+			'presence' => 0,
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->delete('user_update') ?? 'system'
+		];
+	
+		if ($this->ProductApi_model->deleteAddOn($data, $id)) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Add On berhasil Dihapus'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengubah status add on'
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}

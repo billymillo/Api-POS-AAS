@@ -6,8 +6,9 @@ class ProductApi_model extends CI_Model {
 		$this->db->join('lib_kategori', 'mst_produk.id_kategori_barang = lib_kategori.id', 'left');
 		$this->db->join('lib_tipe', 'mst_produk.id_tipe_barang = lib_tipe.id', 'left');
 		$this->db->join('mst_mitra', 'mst_produk.id_mitra_barang = mst_mitra.id', 'left');
+		$this->db->join('lib_add_on', 'mst_produk.id_add_on = lib_add_on.id', 'left');
 		$this->db->select(
-			'mst_produk.*, lib_kategori.kategori as kategori_name, mst_mitra.nama as mitra_name, lib_tipe.tipe as tipe_name'
+			'mst_produk.*, lib_kategori.kategori as kategori_name, mst_mitra.nama as mitra_name, lib_tipe.tipe as tipe_name, lib_add_on.add_on as add_on_name'
 		);
 		if ($id === null) {
 			$this->db->limit($limit, $offset); 
@@ -114,6 +115,31 @@ class ProductApi_model extends CI_Model {
 	public function deleteKategori($data, $id) {
 		$this->db->where('id', $id);
 		$this->db->update('lib_kategori', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function getAddOn($id = NULL) {
+		$this->db->where('presence', 1);
+		if ($id === null) {
+			$query = $this->db->get('lib_add_on')->result_array();
+		} else {
+			$query = $this->db->get_where('lib_add_on', ['id' => $id])->result_array();
+		}
+		return $query;
+	}
+	public function addAddOn($data) {
+		$this->db->insert('lib_add_on', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function editAddOn($data, $id) {
+		$this->db->update('lib_add_on', $data, ['id' => $id]);
+		return $this->db->affected_rows();
+	}
+
+	public function deleteAddOn($data, $id) {
+		$this->db->where('id', $id);
+		$this->db->update('lib_add_on', $data);
 		return $this->db->affected_rows();
 	}
 }

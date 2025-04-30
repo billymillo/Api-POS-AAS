@@ -17,18 +17,36 @@ class Migration_Add_kategori_library extends CI_Migration {
 					'type' => 'VARCHAR',
 					'constraint' => '255',
 				),
-				'created_at' => array(
+				'input_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'updated_at' => array(
+				'update_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-        ));
-                $this->dbforge->add_key('id', TRUE);
-                $this->dbforge->create_table('lib_kategori');
-        }
+				'presence' => array(
+        	    	'type' => 'INT',
+        	    	'constraint' => 12,
+        	    	'default' => 1,
+        		),
+        		'user_input' => array(
+        	    	'type' => 'VARCHAR',
+        	    	'constraint' => '255',
+        		),
+        		'user_update' => array(
+        	    	'type' => 'VARCHAR',
+        	    	'constraint' => '255',
+        		),
+        	));
+        	        $this->dbforge->add_key('id', TRUE);
+        	        $this->dbforge->create_table('lib_kategori');
+					$this->db->query("
+        			    ALTER TABLE lib_kategori 
+        			    MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        			    MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        			");
+        	}
 
         public function down()
         {

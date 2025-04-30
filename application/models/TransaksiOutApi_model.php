@@ -1,11 +1,12 @@
 <?php
 
 class TransaksiOutApi_model extends CI_Model {
-	public function getTransaksiOut($id = NULL, $offset = null, $limit = null) {
+	public function getTransaksiOut($id = NULL, $offset = null, $limit = null, $sort = null) {
 		$this->db->where('mst_transaksi_out.presence', 1);
 		$this->db->from('mst_transaksi_out');
-		
-		$this->db->order_by('mst_transaksi_out.id', 'DESC');
+	
+		$sortDirection = strtolower($sort) === 'desc' ? 'DESC' : 'ASC';
+		$this->db->order_by('mst_transaksi_out.id', $sortDirection);
 	
 		if ($id !== NULL) {
 			$this->db->where('mst_transaksi_out.id', $id);
@@ -13,7 +14,7 @@ class TransaksiOutApi_model extends CI_Model {
 	
 		if ($limit !== null && $offset !== null) {
 			$this->db->limit($limit, $offset);
-		} 
+		}
 	
 		$query = $this->db->get();
 		$transaksi = $query->result_array();
@@ -27,6 +28,7 @@ class TransaksiOutApi_model extends CI_Model {
 	
 		return $transaksi;
 	}
+	
 
 	public function getTransaksiDataById($id) {
 		return $this->db->get_where('mst_transaksi_out', ['id' => $id])->row_array(); 

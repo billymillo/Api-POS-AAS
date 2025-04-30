@@ -51,6 +51,11 @@ class Migration_Add_opname_table extends CI_Migration {
 
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('mst_opname', TRUE);
+        $this->db->query("
+            ALTER TABLE mst_opname 
+            MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ");
     }
 
     public function down()

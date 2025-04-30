@@ -23,17 +23,35 @@ class Migration_Add_det_kasbon_member_table extends CI_Migration {
 					'constraint' => '11',
 					'unsigned' => TRUE,
 				),
-				'created_at' => array(
+				'input_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'updated_at' => array(
+				'update_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
+				'presence' => array(
+                	'type' => 'INT',
+                	'constraint' => 12,
+                	'default' => 1,
+            	),
+            	'user_input' => array(
+                	'type' => 'VARCHAR',
+                	'constraint' => '255',
+            	),
+            	'user_update' => array(
+                	'type' => 'VARCHAR',
+                	'constraint' => '255',
+            	),
         ));
                 $this->dbforge->add_key('id', TRUE);
                 $this->dbforge->create_table('mst_det_kasbon_member');
+				$this->db->query("
+        		    ALTER TABLE mst_det_kasbon_member 
+        		    MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        		    MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        		");
         }
 
         public function down()

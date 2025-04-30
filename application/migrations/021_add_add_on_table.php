@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_det_opname_table extends CI_Migration {
+class Migration_Add_add_on_table extends CI_Migration {
 
     public function up()
     {
@@ -13,35 +13,13 @@ class Migration_Add_det_opname_table extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'id_produk' => array(
+            'add_on' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '255',
+			),
+            'harga' => array(
                 'type' => 'INT',
                 'constraint' => 20,
-                'unsigned' => TRUE,
-            ),
-            'id_opname' => array(
-                'type' => 'INT',
-                'constraint' => 20,
-                'unsigned' => TRUE,
-            ),
-            'stok' => array(
-                'type' => 'INT',
-                'constraint' => 20,
-            ),
-            'stok_asli' => array(
-                'type' => 'INT',
-                'constraint' => 20,
-            ),
-            'harga_satuan' => array(
-                'type' => 'INT',
-                'constraint' => 20,
-            ),
-            'harga_jual' => array(
-                'type' => 'INT',
-                'constraint' => 20,
-            ),
-            'catatan' => array(
-                'type' => 'TEXT',
-                'null' => TRUE,
             ),
             'input_date' => array(
                 'type' => 'DATETIME',
@@ -66,9 +44,9 @@ class Migration_Add_det_opname_table extends CI_Migration {
             ),
         ));
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('mst_det_opname', TRUE);
+        $this->dbforge->create_table('lib_add_on', TRUE);
         $this->db->query("
-            ALTER TABLE mst_det_opname 
+            ALTER TABLE lib_add_on 
             MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ");
@@ -76,6 +54,6 @@ class Migration_Add_det_opname_table extends CI_Migration {
 
     public function down()
     {
-        $this->dbforge->drop_table('mst_det_opname', TRUE);
+        $this->dbforge->drop_table('lib_add_on', TRUE);
     }
 }

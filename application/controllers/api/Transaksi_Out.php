@@ -12,14 +12,17 @@ class Transaksi_Out extends RestController {
 	}
 	public function index_get($id = null) {
 		$id = $this->get('id');
-		$page = $this->get('page') ?? 1;  
-		$limit = $this->get('limit') ?? 100;
+		$page = $this->get('page') ?? 1;
+		$limit = $this->get('limit') ?? 1000;
+		$sort = $this->get('sort') ?? 'asc';
+	
 		if ($id === null) {
 			$offset = ($page - 1) * $limit;
-			$transaksi = $this->TransaksiOutApi_model->getTransaksiOut($id, $offset, $limit);
+			$transaksi = $this->TransaksiOutApi_model->getTransaksiOut($id, $offset, $limit, $sort);
 		} else {
-			$transaksi = $this->TransaksiOutApi_model->getTransaksiOut($id);
-		}	
+			$transaksi = $this->TransaksiOutApi_model->getTransaksiOut($id, null, null, $sort);
+		}
+	
 		if ($transaksi) {
 			$this->response([
 				'status' => TRUE,
@@ -33,6 +36,7 @@ class Transaksi_Out extends RestController {
 			], RestController::HTTP_NOT_FOUND);
 		}
 	}
+	
 	
 
 	public function index_post() {
@@ -175,19 +179,21 @@ class Transaksi_Out extends RestController {
 	
 		$harga_satuan = $this->input->post('harga_satuan');
 		$harga_jual = $this->input->post('harga_jual');
+		$harga_add_on = $this->input->post('harga_add_on') ?? 0;
 		$jumlah = $this->input->post('jumlah');
 		$id_produk = $this->input->post('id_produk');
 		
 		$total_harga_dasar = $harga_satuan * $jumlah;
 		$total_harga = $harga_jual * $jumlah;
 		$laba = $total_harga - $total_harga_dasar;
+
 	
-		$existing_detail = $this->TransaksiOutApi_model->getDetailByProdukAndTransaksi($id_produk, $id_transaksi_out);
+		$detail = $this->TransaksiOutApi_model->getDetailByProdukAndTransaksi($id_produk, $id_transaksi_out);
 	
-		if ($existing_detail) {
-			$new_jumlah = $existing_detail['jumlah'] + $jumlah;
+		if ($detail) {
+			$new_jumlah = $detail['jumlah'] + $jumlah;
 			$new_total_harga_dasar = $harga_satuan * $new_jumlah;
-			$new_total_harga = $harga_jual * $new_jumlah;
+			$new_total_harga = ($harga_jual * $new_jumlah) + $harga_add_on;
 			$new_laba = $new_total_harga - $new_total_harga_dasar;
 	
 			$update_data = [
@@ -197,15 +203,15 @@ class Transaksi_Out extends RestController {
 				'laba' => $new_laba,
 			];
 	
-			if ($this->TransaksiOutApi_model->updateDetail($existing_detail['id'], $update_data)) {
+			if ($this->TransaksiOutApi_model->updateDetail($detail['id'], $update_data)) {
 				$this->response([
 					'status' => 'true',
-					'message' => 'Transaksi Detail berhasil diperbarui',
+					'message' => 'Transaksi Detail berhasil Ditambahkan',
 				], RestController::HTTP_OK);
 			} else {
 				$this->response([
 					'status' => 'false',
-					'message' => 'Gagal memperbarui transaksi detail',
+					'message' => 'Gagal menambahkan detail Transaksi',
 				], RestController::HTTP_BAD_REQUEST);
 			}
 		} else {
@@ -215,11 +221,13 @@ class Transaksi_Out extends RestController {
 				'jumlah' => $jumlah,
 				'harga_satuan' => $harga_satuan,
 				'harga_jual' => $harga_jual,
+				'harga_add_on' => $harga_add_on,
 				'total_harga_dasar' => $total_harga_dasar,
-				'total_harga' => $total_harga,
-				'laba' => $laba,
+				'total_harga' => $total_harga + $harga_add_on,
+				'laba' => $laba + $harga_add_on,
 				'user_input' => $this->input->post('user_input'),
 			];
+			
 	
 			if ($this->TransaksiOutApi_model->addDetail($data) > 0) {
 				$this->response([

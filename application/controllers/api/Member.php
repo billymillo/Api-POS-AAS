@@ -56,6 +56,7 @@ class Member extends RestController {
 			'no_tlp' => $this->input->post('no_tlp'),
 			'saldo' => $this->input->post('saldo'),
 			'poin' => $this->input->post('poin'),
+			'user_input' => $this->input->post('user_input')
 		];
 	
 		if ($this->MemberApi_model->addMember($data) > 0) {
