@@ -107,18 +107,8 @@ class Product extends RestController {
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}
-	
-	public function edit_post() {
-		if ($this->input->get('_method') === 'PUT') {
-			return $this->index_put();
-		}
-	
-		$this->response([
-			'status' => FALSE,
-			'message' => 'Metode tidak valid'
-		], RestController::HTTP_BAD_REQUEST);
-	}
 
+	
 	public function duplicate_post() {
 		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
@@ -185,6 +175,18 @@ class Product extends RestController {
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}
+	
+	public function edit_post() {
+		if ($this->input->get('_method') === 'PUT') {
+			return $this->index_put();
+		}
+	
+		$this->response([
+			'status' => FALSE,
+			'message' => 'Metode tidak valid'
+		], RestController::HTTP_BAD_REQUEST);
+	}
+
 
 	public function index_put() {
 		$id = $this->input->post('id');
