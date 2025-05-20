@@ -158,91 +158,68 @@ class Transaksi_Out extends RestController {
 			], RestController::HTTP_NOT_FOUND);
 		}
 	}
-	
 
-	public function detail_post() {
-		$this->form_validation->set_rules('id_produk', 'Produk Id', 'required|trim|integer');
-		$this->form_validation->set_rules('jumlah', 'Jumlah Transaksi', 'required|trim|integer');
-		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan', 'required|trim|integer');
-		$this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required|trim|integer');
-	
-		if ($this->form_validation->run() == FALSE) {
-			$this->response([
-				'status' => FALSE,
-				'message' => $this->form_validation->error_array()
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-	
-		$last_transaksi = $this->TransaksiOutApi_model->getLastTransaksiOutId();
-		$id_transaksi_out = $last_transaksi ? $last_transaksi['id'] : 1;
-	
-		$harga_satuan = $this->input->post('harga_satuan');
-		$harga_jual = $this->input->post('harga_jual');
-		$harga_add_on = $this->input->post('harga_add_on') ?? 0;
-		$jumlah = $this->input->post('jumlah');
-		$id_produk = $this->input->post('id_produk');
-		
-		$total_harga_dasar = $harga_satuan * $jumlah;
-		$total_harga = $harga_jual * $jumlah;
-		$laba = $total_harga - $total_harga_dasar;
+	public function detail_post(){
+    	$this->form_validation->set_rules('id_produk', 'id_produk', 'required|trim|integer');
+    	$this->form_validation->set_rules('jumlah', 'jumlah', 'required|trim|integer');
+    	$this->form_validation->set_rules('harga_satuan', 'harga_satuan', 'required|trim|integer');
+    	$this->form_validation->set_rules('harga_jual', 'harga_jual', 'required|trim|integer');
+    	$this->form_validation->set_rules('harga_add_on', 'harga_add_on', 'required|trim|integer');
 
-	
-		$detail = $this->TransaksiOutApi_model->getDetailByProdukAndTransaksi($id_produk, $id_transaksi_out);
-	
-		if ($detail) {
-			$new_jumlah = $detail['jumlah'] + $jumlah;
-			$new_total_harga_dasar = $harga_satuan * $new_jumlah;
-			$new_total_harga = ($harga_jual * $new_jumlah) + $harga_add_on;
-			$new_laba = $new_total_harga - $new_total_harga_dasar;
-	
-			$update_data = [
-				'jumlah' => $new_jumlah,
-				'total_harga_dasar' => $new_total_harga_dasar,
-				'total_harga' => $new_total_harga,
-				'laba' => $new_laba,
-			];
-	
-			if ($this->TransaksiOutApi_model->updateDetail($detail['id'], $update_data)) {
-				$this->response([
-					'status' => 'true',
-					'message' => 'Transaksi Detail berhasil Ditambahkan',
-				], RestController::HTTP_OK);
-			} else {
-				$this->response([
-					'status' => 'false',
-					'message' => 'Gagal menambahkan detail Transaksi',
-				], RestController::HTTP_BAD_REQUEST);
-			}
+    	if ($this->form_validation->run() == FALSE) {
+    	    $errors = $this->form_validation->error_array();
+    	    $this->response([
+    	        'status' => FALSE,
+    	        'message' => $errors
+    	    ], RestController::HTTP_BAD_REQUEST);
+    	    return;
+    	}
+
+    	$last_transaksi = $this->TransaksiOutApi_model->getLastTransaksiOutId();
+    	$id_transaksi_out = $last_transaksi ? $last_transaksi['id'] : 1;
+
+    	// Ambil nilai input
+    	$jumlah = $this->input->post('jumlah');
+    	$harga_satuan = $this->input->post('harga_satuan');
+    	$harga_jual = $this->input->post('harga_jual');
+    	$harga_add_on = $this->input->post('harga_add_on');
+
+    	// Hitung otomatis
+    	$total_harga_dasar = $jumlah * $harga_satuan;
+    	$total_harga = $jumlah * $harga_jual + $harga_add_on;
+    	$laba = $total_harga - $total_harga_dasar;
+
+    	$data = [
+    	    'id_transaksi_out' => $id_transaksi_out,
+    	    'id_produk' => $this->input->post('id_produk'),
+    	    'jumlah' => $jumlah,
+    	    'harga_satuan' => $harga_satuan,
+    	    'harga_jual' => $harga_jual,
+    	    'harga_add_on' => $harga_add_on,
+    	    'total_harga_dasar' => $total_harga_dasar,
+    	    'total_harga' => $total_harga,
+    	    'laba' => $laba,
+    	    'user_input' => $this->input->post('user_input') ?? 'system',
+    	];
+
+    	$id_detail = $this->TransaksiOutApi_model->addDetail($data);
+
+		if ($id_detail !== false) {
+		    $this->response([
+		        'status' => TRUE,
+		        'message' => 'Transaksi telah berhasil ditambahkan',
+		        'data' => [
+		            'id' => $id_detail,
+		        ]
+		    ], RestController::HTTP_OK);
 		} else {
-			$data = [
-				'id_transaksi_out' => $id_transaksi_out,
-				'id_produk' => $id_produk,
-				'jumlah' => $jumlah,
-				'harga_satuan' => $harga_satuan,
-				'harga_jual' => $harga_jual,
-				'harga_add_on' => $harga_add_on,
-				'total_harga_dasar' => $total_harga_dasar,
-				'total_harga' => $total_harga + $harga_add_on,
-				'laba' => $laba + $harga_add_on,
-				'user_input' => $this->input->post('user_input'),
-			];
-			
-	
-			if ($this->TransaksiOutApi_model->addDetail($data) > 0) {
-				$this->response([
-					'status' => 'true',
-					'message' => 'Transaksi Detail berhasil',
-				], RestController::HTTP_CREATED);
-			} else {
-				$this->response([
-					'status' => 'false',
-					'message' => 'Transaksi Detail gagal',
-				], RestController::HTTP_BAD_REQUEST);
-			}
+		    $this->response([
+		        'status' => FALSE,
+		        'message' => 'Transaksi gagal ditambahkan',
+		    ], RestController::HTTP_BAD_REQUEST);
 		}
+
 	}
-	
 
 	public function struk_get() {
 		$transaksiOut = $this->TransaksiOutApi_model->getLatestTransaction();

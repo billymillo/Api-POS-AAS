@@ -39,7 +39,6 @@ class Product extends RestController {
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required|trim');
 		$this->form_validation->set_rules('id_kategori_barang', 'Kategori Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('id_tipe_barang', 'Tipe Barang', 'required|trim|integer');
-		$this->form_validation->set_rules('id_add_on', 'Add On Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
 		$this->form_validation->set_rules('stok', 'Stok Barang', 'required|trim|integer');
@@ -885,129 +884,6 @@ class Product extends RestController {
 			$this->response([
 				'status' => FALSE,
 				'message' => 'Gagal mengubah status Kategori'
-			], RestController::HTTP_BAD_REQUEST);
-		}
-	}
-
-	public function add_on_get() {
-		$id = $this->get('id');
-		
-		if($id == null) {
-			$addOn = $this->ProductApi_model->getAddOn();
-		} else {
-			$addOn = $this->ProductApi_model->getAddOn($id);
-		}
-		if($addOn) {
-			$this->response([
-			   'status' => true,
-			   'data'   => $addOn,
-			   'message'=> 'Success'
-			], RestController::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => false,
-				'message'=> 'Id Add On Doesnt Exist'
-			 ], RestController::HTTP_NOT_FOUND);
-		}
-	}
-	public function add_on_post() {
-		$this->form_validation->set_rules('add_on', 'Add On', 'required|trim');
-		$this->form_validation->set_rules('harga', 'Harga', 'required|numeric');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->response([
-				'status' => false,
-				'message' => 'Lengkapi data Add On'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-			$data = [
-				'add_on' => $this->input->post('add_on'),
-				'harga' => $this->input->post('harga'),
-				'user_input' => $this->input->post('user_input') ?? 'system',
-			];
-			if ($this->ProductApi_model->addAddOn($data) > 0) {
-				$this->response([
-					'status' => true,
-					'message' => 'Add On berhasil ditambahkan'
-				], RestController::HTTP_CREATED);
-			} else {
-				$this->response([
-					'status' => false,
-					'message' => 'Add On gagal dibuat'
-				], RestController::HTTP_NOT_FOUND);
-			}
-	}
-
-	public function add_on_put() {
-		$id = $this->put('id');
-					
-		if (!$id) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'ID tidak ditemukan'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-		$data = [
-			'add_on' => $this->put('add_on'),
-			'harga' => $this->put('harga'),
-			'updated_date' =>  date('Y-m-d H:i:s'),
-			'user_update' => $this->input->post('user_update') ?? 'system',
-		];
-
-		if ($data['add_on'] == null) {
-			$this->response([
-				   'status' => FALSE,
-				   'message' => 'Isi Add On'
-			], RestController::HTTP_BAD_REQUEST);
-		} else if ($data['harga'] == null) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Isi Harga'
-		 	], RestController::HTTP_BAD_REQUEST);
-		}
-
-		if ($this->ProductApi_model->editAddOn($data, $id) > 0) {
-			$this->response([
-				   'status' => true,
-				   'message'=> 'Berhasil Mengubah Add On'
-			], RestController::HTTP_OK);
-		} else {
-			$this->response([
-				   'status' => FALSE,
-				   'message' => 'Tidak ada Perubahan'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-	}
-
-	public function add_on_delete() {
-		$id = $this->delete('id');
-	
-		if (!$id) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'ID tidak ditemukan'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-	
-		$data = [
-			'presence' => 0,
-			'updated_date' => date('Y-m-d H:i:s'),
-			'user_update' => $this->delete('user_update') ?? 'system'
-		];
-	
-		if ($this->ProductApi_model->deleteAddOn($data, $id)) {
-			$this->response([
-				'status' => TRUE,
-				'message' => 'Add On berhasil Dihapus'
-			], RestController::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Gagal mengubah status add on'
 			], RestController::HTTP_BAD_REQUEST);
 		}
 	}

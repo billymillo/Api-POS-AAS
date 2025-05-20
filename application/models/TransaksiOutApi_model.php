@@ -100,11 +100,13 @@ class TransaksiOutApi_model extends CI_Model {
 		}
 	}
 	
-	
-	
 	public function addDetail($data) {
-		$this->db->insert('mst_det_transaksi_out', $data);
-		return $this->db->affected_rows();
+    	$this->db->insert('mst_det_transaksi_out', $data);
+    	if ($this->db->affected_rows() > 0) {
+    	    return $this->db->insert_id();
+    	} else {
+        	return false;
+		}
 	}
 	
 	public function updateDetail($id, $data) {

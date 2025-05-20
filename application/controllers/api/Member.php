@@ -4,11 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 use chriskacerguis\RestServer\RestController;
 
 class Member extends RestController {
-	/**
-	 * Konstruktor
-	 *
-	 * Menggunakan konstruktor parent, dan memuat model dan library form_validation
-	 */
+
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('MemberApi_model');
@@ -145,52 +141,4 @@ class Member extends RestController {
 		}
 	}
 
-	public function status_get($id = null) {
-		$id = $this->get('id');
-		if($id == null) {
-			$status = $this->MemberApi_model->getStatus();
-		} else {
-			$status = $this->MemberApi_model->getStatus($id);
-		}
-		if($status) {
-			$this->response([
-			   'status' => TRUE,
-			   'data'   => $status,
-			   'message'=> 'Success'
-			], RestController::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => FALSE,
-				'message'=> 'Id status Doesnt Exist'
-			 ], RestController::HTTP_NOT_FOUND);
-		}
-	}
-
-	public function status_post() {
-		$this->form_validation->set_rules('status', 'Status', 'required|trim');
-
-		if ($this->form_validation->run() == FALSE) {
-			$this->response([
-				'status' => FALSE,
-				'message' => $this->form_validation->error_array()
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-		$data = [
-			'status' => $this->input->post('status'),
-		];
-		if ($this->MemberApi_model->addStatus($data) > 0) {
-			$this->response([
-				'status' => 'true',
-				'message' => 'Status berhasil ditambahkan',
-			], RestController::HTTP_CREATED);
-		} else {
-			$this->response([
-				'status' => 'false',
-				'message' => 'Status gagal ditambahkan',
-			], RestController::HTTP_BAD_REQUEST);
-		}
-
-	}
-	
 }
