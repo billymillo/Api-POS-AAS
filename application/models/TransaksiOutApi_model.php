@@ -108,10 +108,15 @@ class TransaksiOutApi_model extends CI_Model {
         	return false;
 		}
 	}
+
+	public function getDetailDataById($id) {
+		return $this->db->get_where('mst_det_transaksi_out', ['id' => $id])->row_array(); 
+	}
 	
-	public function updateDetail($id, $data) {
-    	$this->db->where('id', $id);
-    	return $this->db->update('mst_det_transaksi_out', $data);
+	public function updateDetail($data, $id) {
+		$this->db->where('id', $id);
+		$this->db->update('mst_det_transaksi_out', $data);
+		return ($this->db->affected_rows() >= 0);
 	}
 
 	public function getDetailByProdukAndTransaksi($id_produk, $id_transaksi_out) {

@@ -25,6 +25,18 @@ class Migration_Add_mitra_table extends CI_Migration {
 					'type' => 'VARCHAR',
 					'constraint' => '255',
 				),
+				'bank_rek' => array(
+					'type' => 'VARCHAR',
+					'constraint' => '255',
+				),
+				'no_rek' => array(
+					'type' => 'VARCHAR',
+					'constraint' => '255',
+				),
+				'nama_rek' => array(
+					'type' => 'VARCHAR',
+					'constraint' => '255',
+				),
 				'status' => array(
 					'type' => 'INT',
 					'constraint' => '1',

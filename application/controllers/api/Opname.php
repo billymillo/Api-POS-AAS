@@ -35,6 +35,7 @@ class Opname extends RestController {
 	
 	public function index_post() {
 		$this->form_validation->set_rules('status_opname', 'Status Opname', 'required|trim');
+		$this->form_validation->set_rules('tipe_opname', 'Tipe Opname', 'required|trim');
 		
 		if ($this->form_validation->run() == FALSE) {
 			$errors = $this->form_validation->error_array();
@@ -63,6 +64,7 @@ class Opname extends RestController {
 			'tanggal' => date('Y-m-d H:i:s'),
 			'no_opname' => $no_opname,
 			'status_opname' => $this->input->post('status_opname'),
+			'tipe_opname' => $this->input->post('tipe_opname'),
 			'user_input' => $this->input->post('user_input'),
 		];
 	

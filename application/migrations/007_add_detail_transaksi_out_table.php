@@ -39,7 +39,19 @@ class Migration_Add_detail_transaksi_out_table extends CI_Migration {
                 'type' => 'INT',
                 'constraint' => 11,
             ),
+            'total_harga_dasar' => array(
+                'type' => 'INT',
+                'constraint' => 11,
+            ),
             'total_harga' => array(
+                'type' => 'INT',
+                'constraint' => 11,
+            ),
+            'laba' => array(
+                'type' => 'INT',
+                'constraint' => 11,
+            ),
+            'saldo' => array(
                 'type' => 'INT',
                 'constraint' => 11,
             ),

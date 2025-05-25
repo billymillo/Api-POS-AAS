@@ -25,6 +25,10 @@ class Migration_Add_opname_table extends CI_Migration {
                 'type' => 'INT',
                 'constraint' => 11,
             ),
+            'tipe_opname' => array(
+                'type' => 'INT',
+                'constraint' => 11,
+            ),
             'input_date' => array(
                 'type' => 'DATETIME',
                 'null' => FALSE,

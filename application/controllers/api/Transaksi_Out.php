@@ -199,6 +199,7 @@ class Transaksi_Out extends RestController {
     	    'total_harga_dasar' => $total_harga_dasar,
     	    'total_harga' => $total_harga,
     	    'laba' => $laba,
+			'saldo' => $total_harga_dasar,
     	    'user_input' => $this->input->post('user_input') ?? 'system',
     	];
 
@@ -220,6 +221,55 @@ class Transaksi_Out extends RestController {
 		}
 
 	}
+
+	public function detail_put() {
+		$id = $this->put('id');
+		
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID produk harus dikirim dalam request'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$transaksi = $this->TransaksiOutApi_model->getDetailDataById($id);
+		if (!$transaksi) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Produk tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+	
+		$data = [
+			'id_transaksi_out' => $this->put('id_transaksi_out') ?? $transaksi['id_transaksi_out'],
+    	    'id_produk' => $this->put('id_produk') ?? $transaksi['id_produk'],
+    	    'jumlah' => $this->put('jumlah') ?? $transaksi['jumlah'],
+    	    'harga_satuan' => $this->put('harga_satuan') ?? $transaksi['harga_satuan'],
+    	    'harga_jual' => $this->put('harga_jual') ?? $transaksi['harga_jual'],
+    	    'harga_add_on' => $this->put('harga_add_on') ?? $transaksi['harga_add_on'],
+    	    'total_harga_dasar' => $this->put('total_harga_dasar') ?? $transaksi['total_harga_dasar'],
+    	    'total_harga' => $this->put('total_harga') ?? $transaksi['total_harga'],
+    	    'laba' => $this->put('laba') ?? $transaksi['laba'],
+			'saldo' => $this->put('saldo') ?? $transaksi['saldo'],
+    	    'user_update' => $this->input->post('user_update') ?? 'system',
+		];
+
+
+		if ($this->TransaksiOutApi_model->updateDetail($data, $id) > 0) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Update Detail Transaksi berhasil diperbarui',
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengupdate Detail Transaksi',
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
 
 	public function struk_get() {
 		$transaksiOut = $this->TransaksiOutApi_model->getLatestTransaction();

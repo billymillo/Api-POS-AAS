@@ -108,73 +108,6 @@ class Product extends RestController {
 	}
 
 	
-	public function duplicate_post() {
-		$this->form_validation->set_rules('harga_satuan', 'Harga Satuan Barang', 'required|trim|integer');
-		$this->form_validation->set_rules('harga_jual', 'Harga Jual Barang', 'required|trim|integer');
-		$this->form_validation->set_rules('stok', 'Stok Barang', 'required|trim|integer');
-
-		if ($this->form_validation->run() == FALSE) {
-			$errors = $this->form_validation->error_array();
-		} else {
-			$errors = [];
-		}
-
-		if (!empty($errors)) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Lengkapi Data Produk Terlebih Dahulu!'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-		$id = $this->input->post('id');
-
-		if (!$id) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'ID produk harus dikirim dalam request'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-	
-		$product = $this->ProductApi_model->getProductDataById($id);
-
-		if (!$product) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Produk tidak ditemukan'
-			], RestController::HTTP_NOT_FOUND);
-			return;
-		}
-	
-		$data = [
-			'nama_barang' => $product['nama_barang'],
-			'gambar_barang' => $product['gambar_barang'],
-			'id_kategori_barang' => $product['id_kategori_barang'],
-			'id_tipe_barang' => $product['id_tipe_barang'],
-			'id_mitra_barang' => $product['id_mitra_barang'],
-			'id_add_on' => $product['id_add_on'],
-			'harga_pack' => $product['harga_pack'],
-			'jml_pcs_pack' => $product['jml_pcs_pack'],
-			'harga_satuan' => $this->input->post('harga_satuan'),
-			'harga_jual' => $this->input->post('harga_jual'),
-			'stok' => $this->input->post('stok') ?? $product['stok'],
-			'laba' => ($this->input->post('harga_jual') ?? $product['harga_jual']) - ($this->input->post('harga_satuan') ?? $product['harga_satuan']),
-			'updated_date' => date('Y-m-d H:i:s'),
-		];
-	
-		if ($this->ProductApi_model->addProduct($data, $id) > 0) {
-			$this->response([
-				'status' => TRUE,
-				'message' => 'Berhasil menambahkan produk'
-			], RestController::HTTP_OK);
-		} else {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Gagal menambahkan produk'
-			], RestController::HTTP_BAD_REQUEST);
-		}
-	}
-	
 	public function edit_post() {
 		if ($this->input->get('_method') === 'PUT') {
 			return $this->index_put();
@@ -242,7 +175,7 @@ class Product extends RestController {
 			'harga_jual' => $this->input->post('harga_jual') ?? $product['harga_jual'],
 			'stok' => $this->input->post('stok') ?? $product['stok'],
 			'laba' => ($this->input->post('harga_jual') ?? $product['harga_jual']) - ($this->input->post('harga_satuan') ?? $product['harga_satuan']),
-			'user_input' => $this->input->post('user_input') ?? 'system',
+			'user_update' => $this->input->post('user_update') ?? 'system',
 			'updated_date' => date('Y-m-d H:i:s'),
 		];
 	
@@ -601,6 +534,9 @@ class Product extends RestController {
 			'nama' => $this->input->post('nama'),
 			'no_tlp' => $this->input->post('no_tlp'),
 			'email' => $this->input->post('email') ?? NULL,
+			'bank_rek' => $this->input->post('bank_rek') ?? NULL,
+			'no_rek' => $this->input->post('no_rek') ?? NULL,
+			'nama_rek' => $this->input->post('nama_rek') ?? NULL,
 			'user_input' => $this->input->post('user_input') ?? "system"
 		];
 	
@@ -632,6 +568,9 @@ class Product extends RestController {
 			'nama' => $this->put('nama'),
 			'no_tlp' => $this->put('no_tlp'),
 			'email' => $this->put('email'),
+			'bank_rek' => $this->put('bank_rek'),
+			'no_rek' => $this->put('no_rek'),
+			'nama_rek' => $this->put('nama_rek'),
 			'updated_date' => date('Y-m-d H:i:s'),
 			'user_update' => $this->input->post('user_update'),
 		];
