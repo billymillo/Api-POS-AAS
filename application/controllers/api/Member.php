@@ -141,4 +141,130 @@ class Member extends RestController {
 		}
 	}
 
+	public function topup_get($id = null) {
+		$id = $this->get('id');
+		if($id == null) {
+			$member = $this->MemberApi_model->getTopup();
+		} else {
+			$member = $this->MemberApi_model->getTopup($id);
+		}
+		if($member) {
+			$this->response([
+			   'status' => TRUE,
+			   'data'   => $member,
+			   'message'=> 'Success'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message'=> 'Id Topup Doesnt Exist'
+			 ], RestController::HTTP_NOT_FOUND);
+		}
+	}
+
+	public function topup_post() {
+		$this->form_validation->set_rules('id_member', 'Id Member', 'required|trim');
+		$this->form_validation->set_rules('total_topup', 'Total Topup', 'required|trim');		
+		$this->form_validation->set_rules('id_metode', 'Metode Topup', 'required|trim');		
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->response([
+				'status' => FALSE,
+				'message' => $this->form_validation->error_array()
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$data = [
+			'id_member' => $this->input->post('id_member'),
+			'total_topup' => $this->input->post('total_topup'),
+			'id_metode' => $this->input->post('id_metode'),
+			'user_input' => $this->input->post('user_input')
+		];
+	
+		if ($this->MemberApi_model->addTopup($data) > 0) {
+			$this->response([
+				'status' => true,
+				'message' => 'Top Up Berhasil, Saldo berhasil ditambahkan',
+			], RestController::HTTP_CREATED);
+		} else {
+			$this->response([
+				'status' => false,
+				'message' => 'Top Up Gagal, Saldo gagal ditambahkan',
+			], RestController::HTTP_BAD_REQUEST);
+		}
+
+	}
+
+	public function topup_put() {
+		$id = $this->put('id');
+			
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID Member tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+
+		$member = $this->MemberApi_model->getMemberDataById($id);
+		if (!$member) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Member tidak ditemukan'
+			], RestController::HTTP_NOT_FOUND);
+			return;
+		}
+
+		$data = [
+			'id_member' => $this->put('id_member') ?? $member['id_member'],
+			'total_topup' => $this->put('total_topup') ?? $member['total_topup'],
+			'id_metode' => $this->put('id_metode') ?? $member['id_metode'],
+			'updated_date' => date('Y-m-d H:i:s'),
+		];
+
+		if ($this->MemberApi_model->editTopup($data, $id) > 0) {
+			$this->response([
+				   'status' => true,
+				   'message'=> 'Berhasil mengubah isi member'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				   'status' => FALSE,
+				   'message' => 'Tidak Terjadi Perubahan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	}
+
+	public function topup_delete() {
+		$id = $this->delete('id');
+	
+		if (!$id) {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'ID tidak ditemukan'
+			], RestController::HTTP_BAD_REQUEST);
+			return;
+		}
+	
+		$data = [
+			'presence' => 0,
+			'updated_date' => date('Y-m-d H:i:s'),
+			'user_update' => $this->delete('user_update') ?? 'system'
+		];
+	
+		if ($this->MemberApi_model->deleteTopup($data, $id)) {
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Top Up berhasil Dihapus'
+			], RestController::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Gagal mengubah status Top Up'
+			], RestController::HTTP_BAD_REQUEST);
+		}
+	}
+
 }

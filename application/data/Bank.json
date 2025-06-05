@@ -1,0 +1,557 @@
+[
+    {
+        "nama": "BANK BRI",
+        "kode": "002",
+        "id": "1" 
+    },
+    {
+        "nama": "BANK MANDIRI",
+        "kode": "008",
+        "id": "2" 
+    },
+    {
+        "nama": "BANK BNI",
+        "kode": "009",
+        "id": "3" 
+    },
+    {
+        "nama": "BANK DANAMON",
+        "kode": "011",
+        "id": "4" 
+    },
+    {
+        "nama": "BANK PERMATA",
+        "kode": "013",
+        "id": "5" 
+    },
+    {
+        "nama": "BANK PERMATA SYARIAH",
+        "kode": "013",
+        "id": "6" 
+    },
+    {
+        "nama": "BANK BCA",
+        "kode": "014",
+        "id": "7" 
+    },
+    {
+        "nama": "BLL MAYBANK",
+        "kode": "016",
+        "id": "8" 
+    },
+    {
+        "nama": "MAYBANK SYARIAH",
+        "kode": "016",
+        "id": "9"
+    },
+    {
+        "nama": "BANK PANIN",
+        "kode": "019",
+        "id": "10"
+    },
+    {
+        "nama": "CIMB NIAGA",
+        "kode": "022",
+        "id": "11"
+    },
+    {
+        "nama": "BANK UOB INDONESIA",
+        "kode": "023",
+        "id": "12"
+    },
+    {
+        "nama": "BANK OCBC NISP",
+        "kode": "028",
+        "id": "13"
+    },
+    {
+        "nama": "CITIBANK",
+        "kode": "031",
+        "id": "14"
+    },
+    {
+        "nama": "BANK WINDU KENTJANA INTERNATIONAL",
+        "kode": "036",
+        "id": "15"
+    },
+    {
+        "nama": "BANK ARTHA GRAHA",
+        "kode": "037",
+        "id": "16"
+    },
+    {
+        "nama": "BANK TOKYO MITSUBISHI UFJ",
+        "kode": "042",
+        "id": "17"
+    },
+    {
+        "nama": "BANK DBS",
+        "kode": "046",
+        "id": "18"
+    },
+    {
+        "nama": "STANDART CHARTERED",
+        "kode": "050",
+        "id": "19"
+    },
+    {
+        "nama": "BANK CAPITAL",
+        "kode": "054",
+        "id": "20"
+    },
+    {
+        "nama": "ANZ INDONESIA",
+        "kode": "061",
+        "id": "21"
+    },
+    {
+        "nama": "BANK OF CHINA",
+        "kode": "069",
+        "id": "22"
+    },
+    {
+        "nama": "BANK BUMI ARTA",
+        "kode": "076",
+        "id": "23"
+    },
+    {
+        "nama": "BANK HSBC",
+        "kode": "087",
+        "id": "24"
+    },
+    {
+        "nama": "BANK ANTARDAERAH",
+        "kode": "088",
+        "id": "25"
+    },
+    {
+        "nama": "BANK RABOBANK",
+        "kode": "089",
+        "id": "26"
+    },
+    {
+        "nama": "BANK JTRUST INDONESIA",
+        "kode": "095",
+        "id": "27"
+    },
+    {
+        "nama": "BANK MAYAPADA",
+        "kode": "097",
+        "id": "28"
+    },
+    {
+        "nama": "BANK JAWA BARAT",
+        "kode": "110",
+        "id": "29"
+    },
+    {
+        "nama": "BANK DKI",
+        "kode": "111",
+        "id": "30"
+    },
+    {
+        "nama": "BANK BPD DIY",
+        "kode": "112",
+        "id": "31"
+    },
+    {
+        "nama": "BANK JATENG",
+        "kode": "113",
+        "id": "32"
+    },
+    {
+        "nama": "BANK JATIM",
+        "kode": "114",
+        "id": "33"
+    },
+    {
+        "nama": "BANK JAMBI",
+        "kode": "115",
+        "id": "34"
+    },
+    {
+        "nama": "BANK JAMBI SYARIAH",
+        "kode": "115",
+        "id": "35"
+    },
+    {
+        "nama": "BANK ACEH",
+        "kode": "116",
+        "id": "36"
+    },
+    {
+        "nama": "BANK ACEH SYARIAH",
+        "kode": "116",
+        "id": "37"
+    },
+    {
+        "nama": "BANK SUMUT",
+        "kode": "117",
+        "id": "38"
+    },
+    {
+        "nama": "BANK NAGARI",
+        "kode": "118",
+        "id": "39"
+    },
+    {
+        "nama": "BANK RIAU",
+        "kode": "119",
+        "id": "40"
+    },
+    {
+        "nama": "BANK RIAU SYARIAH",
+        "kode": "119",
+        "id": "41"
+    },
+    {
+        "nama": "BANK SUMSEL BABEL",
+        "kode": "120",
+        "id": "42"
+    },
+    {
+        "nama": "BANK SUMSEL BABEL SYARIAH",
+        "kode": "120",
+        "id": "43"
+    },
+    {
+        "nama": "BANK LAMPUNG",
+        "kode": "121",
+        "id": "44"
+    },
+    {
+        "nama": "BANK KALSEL",
+        "kode": "122",
+        "id": "45"
+    },
+    {
+        "nama": "BANK KALBAR",
+        "kode": "123",
+        "id": "46"
+    },
+    {
+        "nama": "BANK BPD KALTIM",
+        "kode": "124",
+        "id": "47"
+    },
+    {
+        "nama": "BANK BPD KALTIM",
+        "kode": "125",
+        "id": "48"
+    },
+    {
+        "nama": "BANK SULSELBAR",
+        "kode": "126",
+        "id": "49"
+    },
+    {
+        "nama": "BANK SULUT",
+        "kode": "127",
+        "id": "50"
+    },
+    {
+        "nama": "BANK NTB",
+        "kode": "128",
+        "id": "51"
+    },
+    {
+        "nama": "BANK NTB SYARIAH",
+        "kode": "128",
+        "id": "52"
+    },
+    {
+        "nama": "BANK BPD BALI",
+        "kode": "129",
+        "id": "53"
+    },
+    {
+        "nama": "BANK NTT",
+        "kode": "130",
+        "id": "54"
+    },
+    {
+        "nama": "BANK MALUKU",
+        "kode": "131",
+        "id": "55"
+    },
+    {
+        "nama": "BANK BPD PAPUA",
+        "kode": "132",
+        "id": "56"
+    },
+    {
+        "nama": "BANK SULTENG",
+        "kode": "134",
+        "id": "57"
+    },
+    {
+        "nama": "BANK SULTRA",
+        "kode": "135",
+        "id": "58"
+    },
+    {
+        "nama": "BANK BANTEN",
+        "kode": "137",
+        "id": "59"
+    },
+    {
+        "nama": "BANK NUSANTARA PARAHYANGAN",
+        "kode": "145",
+        "id": "60"
+    },
+    {
+        "nama": "BANK OF INDIA INDONESIA",
+        "kode": "146",
+        "id": "61"
+    },
+    {
+        "nama": "BANK MUAMALAT",
+        "kode": "147",
+        "id": "62"
+    },
+    {
+        "nama": "BANK MESTIKA",
+        "kode": "151",
+        "id": "63"
+    },
+    {
+        "nama": "BANK SHINHAN",
+        "kode": "152",
+        "id": "64"
+    },
+    {
+        "nama": "BANK SINARMAS",
+        "kode": "153",
+        "id": "65"
+    },
+    {
+        "nama": "BANK MASPION",
+        "kode": "157",
+        "id": "66"
+    },
+    {
+        "nama": "BANK GANESHA",
+        "kode": "161",
+        "id": "67"
+    },
+    {
+        "nama": "BANK ICBC",
+        "kode": "164",
+        "id": "68"
+    },
+    {
+        "nama": "BANK QNB INDONESIA",
+        "kode": "167",
+        "id": "69"
+    },
+    {
+        "nama": "BANK BTN",
+        "kode": "200",
+        "id": "70"
+    },
+    {
+        "nama": "BANK WOORI SAUDARA",
+        "kode": "212",
+        "id": "71"
+    },
+    {
+        "nama": "BANK BTPN",
+        "kode": "213",
+        "id": "72"
+    },
+    {
+        "nama": "BANK VICTORIA SYARIAH",
+        "kode": "405",
+        "id": "73"
+    },
+    {
+        "nama": "BANK BRI SYARIAH",
+        "kode": "422",
+        "id": "74"
+    },
+    {
+        "nama": "BANK JABAR BANTEN SYARIAH",
+        "kode": "425",
+        "id": "75"
+    },
+    {
+        "nama": "BANK MEGA",
+        "kode": "426",
+        "id": "76"
+    },
+    {
+        "nama": "BANK BNI SYARIAH",
+        "kode": "427",
+        "id": "77"
+    },
+    {
+        "nama": "BANK BUKOPIN",
+        "kode": "441",
+        "id": "78"
+    },
+    {
+        "nama": "BANK SYARIAH MANDIRI",
+        "kode": "451",
+        "id": "79"
+    },
+    {
+        "nama": "BANK JASA JAKARTA",
+        "kode": "472",
+        "id": "80"
+    },
+    {
+        "nama": "BANK KEB HANA",
+        "kode": "484",
+        "id": "81"
+    },
+    {
+        "nama": "BANK MNC INTERNATIONAL",
+        "kode": "485",
+        "id": "82"
+    },
+    {
+        "nama": "BANK YUDHA BHAKTI",
+        "kode": "490",
+        "id": "83"
+    },
+    {
+        "nama": "BANK RAKYAT INDONESIA AGRONIAGA",
+        "kode": "494",
+        "id": "84"
+    },
+    {
+        "nama": "BANK SBI INDONESIA (INDOMONEX)",
+        "kode": "498",
+        "id": "85"
+    },
+    {
+        "nama": "BANK ROYAL",
+        "kode": "501",
+        "id": "86"
+    },
+    {
+        "nama": "BANK NATIONAL NOBU",
+        "kode": "503",
+        "id": "87"
+    },
+    {
+        "nama": "BANK MEGA SYARIAH",
+        "kode": "506",
+        "id": "88"
+    },
+    {
+        "nama": "BANK INA",
+        "kode": "513",
+        "id": "89"
+    },
+    {
+        "nama": "BANK PANIN SYARIAH",
+        "kode": "517",
+        "id": "90"
+    },
+    {
+        "nama": "PRIMA MASTER BANK",
+        "kode": "520",
+        "id": "91"
+    },
+    {
+        "nama": "BANK SYARIAH BUKOPIN",
+        "kode": "521",
+        "id": "92"
+    },
+    {
+        "nama": "BANK SAHABAT SAMPOERNA",
+        "kode": "523",
+        "id": "93"
+    },
+    {
+        "nama": "BANK DINAR",
+        "kode": "526",
+        "id": "94"
+    },
+    {
+        "nama": "BANK KESEJAHTERAAN EKONOMI",
+        "kode": "535",
+        "id": "95"
+    },
+    {
+        "nama": "BANK BCA SYARIAH",
+        "kode": "536",
+        "id": "96"
+    },
+    {
+        "nama": "BANK ARTOS",
+        "kode": "542",
+        "id": "97"
+    },
+    {
+        "nama": "BANK BTPN SYARIAH",
+        "kode": "547",
+        "id": "98"
+    },
+    {
+        "nama": "BANK MULTIARTA SENTOSA",
+        "kode": "548",
+        "id": "99"
+    },
+    {
+        "nama": "BANK MAYORA",
+        "kode": "553",
+        "id": "100"
+    },
+    {
+        "nama": "BANK INDEX",
+        "kode": "555",
+        "id": "101"
+    },
+    {
+        "nama": "CNB",
+        "kode": "559",
+        "id": "102"
+    },
+    {
+        "nama": "BANK MANTAP",
+        "kode": "564",
+        "id": "103"
+    },
+    {
+        "nama": "BANK VICTORIA INTL",
+        "kode": "566",
+        "id": "104"
+    },
+    {
+        "nama": "HARDA",
+        "kode": "567",
+        "id": "105"
+    },
+    {
+        "nama": "IBK",
+        "kode": "945",
+        "id": "106"
+    },
+    {
+        "nama": "BANK COMMONWEALTH",
+        "kode": "950",
+        "id": "107"
+    },
+    {
+        "nama": "OVO",
+        "kode": "ovo",
+        "id": "108"
+    },
+    {
+        "nama": "LINKAJA",
+        "kode": "linkaja",
+        "id": "109"
+    },
+    {
+        "nama": "DANA",
+        "kode": "dana",
+        "id": "110"
+    },
+    {
+        "nama": "GOPAY",
+        "kode": "gopay",
+        "id": "111"
+    }
+]

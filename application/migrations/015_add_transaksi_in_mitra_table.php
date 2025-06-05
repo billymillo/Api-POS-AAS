@@ -19,8 +19,8 @@ class Migration_Add_transaksi_in_mitra_table extends CI_Migration {
 					'unsigned' => TRUE,
 				),
 				'no_transaksi_in' => array(
-					'type' => 'INT',
-					'constraint' => '11',
+					'type' => 'VARCHAR',
+					'constraint' => '255',
 					'unsigned' => TRUE,
 				),
 				'jumlah_produk' => array(
@@ -40,7 +40,7 @@ class Migration_Add_transaksi_in_mitra_table extends CI_Migration {
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'update_date' => array(
+				'updated_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),

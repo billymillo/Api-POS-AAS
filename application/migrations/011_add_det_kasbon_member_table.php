@@ -27,7 +27,7 @@ class Migration_Add_det_kasbon_member_table extends CI_Migration {
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'update_date' => array(
+				'updated_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),

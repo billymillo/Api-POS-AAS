@@ -81,17 +81,18 @@ class Product extends RestController {
 		
 		$data = [
 			'nama_barang' => $this->input->post('nama_barang'),
+			'barcode_barang' => $this->input->post('barcode_barang'),
 			'gambar_barang' => $data_image['file_name'],
 			'id_kategori_barang' => $this->input->post('id_kategori_barang'),
 			'id_tipe_barang' => $this->input->post('id_tipe_barang'),
 			'id_mitra_barang' => $this->input->post('id_mitra_barang'),
-			'id_add_on' => $this->input->post('id_add_on'),
 			'harga_pack' => $this->input->post('harga_pack'),
 			'jml_pcs_pack' => $this->input->post('jml_pcs_pack'),
 			'harga_satuan' => $this->input->post('harga_satuan'),
 			'harga_jual' => $this->input->post('harga_jual'),
 			'stok' => $this->input->post('stok'),
 			'laba' => $this->input->post('harga_jual') - $this->input->post('harga_satuan'),
+			'user_input' => $this->input->post('user_input') ?? 'system',
 		];
 	
 		if ($this->ProductApi_model->addProduct($data) > 0) {
@@ -164,11 +165,11 @@ class Product extends RestController {
 	
 		$data = [
 			'nama_barang' => $this->input->post('nama_barang') ?? $product['nama_barang'],
+			'barcode_barang' => $this->input->post('barcode_barang') ?? $product['barcode_barang'],
 			'gambar_barang' => $gambar_barang ?? $product['gambar_barang'],
 			'id_kategori_barang' => $this->input->post('id_kategori_barang') ?? $product['id_kategori_barang'],
 			'id_tipe_barang' => $this->input->post('id_tipe_barang') ?? $product['id_tipe_barang'],
 			'id_mitra_barang' => $this->input->post('id_mitra_barang') ?? $product['id_mitra_barang'],
-			'id_add_on' => $this->input->post('id_add_on') ?? $product['id_add_on'],
 			'harga_pack' => $this->input->post('harga_pack') ?? $product['harga_pack'],
 			'jml_pcs_pack' => $this->input->post('jml_pcs_pack') ?? $product['jml_pcs_pack'],
 			'harga_satuan' => $this->input->post('harga_satuan') ?? $product['harga_satuan'],
@@ -215,11 +216,11 @@ class Product extends RestController {
 	
 		$data = [
 			'nama_barang' => $this->put('nama_barang') ?? $product['nama_barang'],
+			'barcode_barang' => $this->put('barcode_barang') ?? $product['barcode_barang'],
 			'gambar_barang' => $this->put('gambar_barang') ?? $product['gambar_barang'],
 			'id_kategori_barang' => $this->put('id_kategori_barang') ?? $product['id_kategori_barang'],
 			'id_tipe_barang' => $this->put('id_tipe_barang') ?? $product['id_tipe_barang'],
 			'id_mitra_barang' => $this->put('id_mitra_barang') ?? $product['id_mitra_barang'],
-			'id_add_on' => $this->put('id_add_on') ?? $product['id_add_on'],
 			'harga_pack' => $this->put('harga_pack') ?? $product['harga_pack'],
 			'jml_pcs_pack' => $this->put('jml_pcs_pack') ?? $product['jml_pcs_pack'],
 			'harga_satuan' => $this->put('harga_satuan') ?? $product['harga_satuan'],
@@ -542,12 +543,12 @@ class Product extends RestController {
 	
 		if ($this->ProductApi_model->addMitra($data) > 0) {
 			$this->response([
-				'status' => 'true',
+				'status' => true,
 				'message' => 'Mitra berhasil ditambahkan',
 			], RestController::HTTP_CREATED);
 		} else {
 			$this->response([
-				'status' => 'false',
+				'status' => false,
 				'message' => 'Mitra gagal ditambahkan',
 			], RestController::HTTP_BAD_REQUEST);
 		}

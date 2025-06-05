@@ -197,7 +197,7 @@ class Transaksi_In extends RestController {
 		}
 		$data = [
 			'metode' => $this->put('metode'),
-			'update_date' =>  $this->put('update_date'),
+			'updated_date' =>  $this->put('updated_date'),
 		];
 		if ($data['metode'] == null) {
 			$this->response([
@@ -232,7 +232,7 @@ class Transaksi_In extends RestController {
 	
 		$data = [
 			'presence' => 0,
-			'update_date' => date('Y-m-d H:i:s'),
+			'updated_date' => date('Y-m-d H:i:s'),
 			'user_update' => $this->delete('user_update') ?? 'system'
 		];
 	

@@ -31,16 +31,34 @@ class MemberApi_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
-	public function getStatus($id = NULL) {
+	public function getTopup($id = NULL) {
+		$this->db->where('presence', 1);
+
 		if ($id === null) {
-			$query = $this->db->get('lib_status')->result_array();
+			$query = $this->db->get('mst_topup_member')->result_array();
 		} else {
-			$query = $this->db->get_where('lib_status', ['id' => $id])->result_array();
+			$query = $this->db->get_where('mst_topup_member', ['id' => $id])->result_array();
 		}
 		return $query;
 	}
-	public function addStatus($data) {
-		$this->db->insert('lib_status', $data);
+
+	public function getTopupDataById($id) {
+		return $this->db->get_where('mst_topup_member', ['id' => $id])->row_array(); 
+	}
+	public function addTopup($data) {
+		$this->db->insert('mst_topup_member', $data);
 		return $this->db->affected_rows();
 	}
+
+	public function editTopup($data, $id) {
+		$this->db->update('mst_topup_member', $data, ['id' => $id]);
+		return $this->db->affected_rows();
+	}
+
+	public function deleteTopup($data, $id) {
+		$this->db->where('id', $id);
+		$this->db->update('mst_topup_member', $data);
+		return $this->db->affected_rows();
+	}
+
 }

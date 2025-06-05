@@ -21,7 +21,7 @@ class Migration_Add_tipe_library extends CI_Migration {
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'update_date' => array(
+				'updated_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),

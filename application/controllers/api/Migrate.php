@@ -6,11 +6,11 @@ class Migrate extends CI_Controller {
     public function index()
     {
         $this->load->library('migration');
-
-        if ($this->migration->latest() === FALSE) {
+        if ($this->migration->version(24) === FALSE) {
             show_error($this->migration->error_string());
         } else {
-            echo "Migration successful!";
+            echo "Migration to version 24 successful!";
         }
     }
+
 }

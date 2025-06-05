@@ -121,6 +121,7 @@ class Kasbon extends RestController {
 		}
 	
 		$data = [
+			'id_status' => 1,
 			'total_kasbon' => 0,
 			'presence' => 0,
 			'updated_date' => date('Y-m-d H:i:s'),

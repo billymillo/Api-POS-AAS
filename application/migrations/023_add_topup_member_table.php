@@ -2,9 +2,8 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_member_table extends CI_Migration {
-
-        public function up()
+class Migration_Add_topup_member_table extends CI_Migration {
+    public function up()
         {		
     		$this->dbforge->add_field(array(
 				'id' => array(
@@ -13,21 +12,14 @@ class Migration_Add_member_table extends CI_Migration {
 					'unsigned' => TRUE,
 					'auto_increment' => TRUE
 				),
-				'nama' => array(
-					'type' => 'VARCHAR',
-					'constraint' => '255',
+				'id_member' => array(
+					'type' => 'INT',
+					'constraint' => '11',
+					'unsigned' => TRUE,
 				),
-				'no_tlp' => array(
-					'type' => 'VARCHAR',
-					'constraint' => "15",	
-				),
-				'saldo' => array(
-					'type' => 'int',
-					'constraint' => '20',
-				),
-				'poin' => array(
-					'type' => 'int',
-					'constraint' => '20',
+				'total_topup' => array(
+					'type' => 'INT',
+					'constraint' => '11',
 				),
 				'input_date' => array(
 					'type' => 'DATETIME',
@@ -51,17 +43,21 @@ class Migration_Add_member_table extends CI_Migration {
                 	'constraint' => '255',
             	),
         ));
-                $this->dbforge->add_key('id', TRUE);
-                $this->dbforge->create_table('mst_member');
-				$this->db->query("
-        		    ALTER TABLE mst_member 
-        		    MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        		    MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        		");
+            $this->dbforge->add_key('id', TRUE);
+            $this->dbforge->create_table('mst_topup_member');
+			$this->db->query("
+    			ALTER TABLE mst_topup_member 
+    			MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+			");
+			$this->db->query("
+    			ALTER TABLE mst_topup_member 
+    			MODIFY updated_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+			");
+
         }
 
         public function down()
         {
-                $this->dbforge->drop_table('mst_member');
+                $this->dbforge->drop_table('mst_topup_member');
         }
 }

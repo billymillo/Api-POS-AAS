@@ -17,6 +17,10 @@ class Migration_Add_products_table extends CI_Migration {
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ),
+            'barcode_barang' => array(
+                'type' => 'INT',
+                'constraint' => '20',
+            ),
 			'gambar_barang' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '255',
@@ -36,40 +40,35 @@ class Migration_Add_products_table extends CI_Migration {
                 'constraint' => 11,
                 'unsigned' => TRUE,
             ),
-            'id_add_on' => array(
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => TRUE,
-            ),
             'harga_pack' => array(
-                'type' => 'DECIMAL',
-                'constraint' => '14,2',
+                'type' => 'INT',
+                'constraint' => '20',
             ),
             'jml_pcs_pack' => array(
                 'type' => 'INT',
                 'constraint' => 11,
             ),
             'harga_satuan' => array(
-                'type' => 'DECIMAL',
-                'constraint' => '14,2',
+                'type' => 'INT',
+                'constraint' => '20',
             ),
             'harga_jual' => array(
-                'type' => 'DECIMAL',
-                'constraint' => '14,2',
+                'type' => 'INT',
+                'constraint' => '20',
             ),
             'stok' => array(
                 'type' => 'INT',
                 'constraint' => 11,
             ),
             'laba' => array(
-                'type' => 'DECIMAL',
-                'constraint' => '14,2',
+                'type' => 'INT',
+                'constraint' => '20',
             ),
             'input_date' => array(
 				'type' => 'DATETIME',
 				'null' => TRUE,
 			),
-			'update_date' => array(
+			'updated_date' => array(
 				'type' => 'DATETIME',
 				'null' => TRUE,
 			),

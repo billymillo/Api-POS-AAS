@@ -23,7 +23,7 @@ class Migration_Add_kasbon_member_table extends CI_Migration {
 					'constraint' => '11',
 				),
 				'tgl_pelunasan' => array(
-					'type' => 'DATETIME',
+					'type' => 'DATE',
 					'null' => FALSE,
 					'default' => NULL,
 				),
@@ -36,7 +36,7 @@ class Migration_Add_kasbon_member_table extends CI_Migration {
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),
-				'update_date' => array(
+				'updated_date' => array(
 					'type' => 'DATETIME',
 					'null' => TRUE,
 				),

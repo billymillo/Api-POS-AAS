@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_transaksi_out_table extends CI_Migration {
+class Migration_Add_transaksi_out_mitra_table extends CI_Migration {
 
     public function up()
     {
@@ -13,16 +13,16 @@ class Migration_Add_transaksi_out_table extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'id_member' => array(
+			'no_transaksi_out_mitra' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+            ),
+            'id_mitra' => array(
                 'type' => 'INT',
                 'constraint' => 11,
 				'unsigned' => TRUE,
             ),
-			'no_transaksi_out' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 25,
-            ),
-            'jumlah_barang' => array(
+            'total_jumlah' => array(
                 'type' => 'INT',
                 'constraint' => 11,
             ),
@@ -30,21 +30,17 @@ class Migration_Add_transaksi_out_table extends CI_Migration {
                 'type' => 'INT',
                 'constraint' => 11,
             ),
-            'diskon' => array(
-                'type' => 'INT',
-                'constraint' => 11,
-            ),
             'status_transaksi' => array(
                 'type' => 'INT',
-                'constraint' => 1,
-            ),
-            'potongan_poin' => array(
-                'type' => 'INT',
                 'constraint' => 11,
             ),
-            'mendapatkan_poin' => array(
-                'type' => 'INT',
-                'constraint' => 11,
+            'tanggal_awal' => array(
+                'type' => 'DATETIME',
+				'null' => FALSE,
+            ),
+            'tanggal_akhir' => array(
+                'type' => 'DATETIME',
+				'null' => FALSE,
             ),
             'input_date' => array(
 				'type' => 'DATETIME',
@@ -68,17 +64,21 @@ class Migration_Add_transaksi_out_table extends CI_Migration {
             	'constraint' => '255',
         	),
         ));
-                $this->dbforge->add_key('id', TRUE);
-                $this->dbforge->create_table('mst_transaksi_out');
-				$this->db->query("
-        		    ALTER TABLE mst_transaksi_out 
-        		    MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        		    MODIFY updated_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        		");
-        }
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('mst_transaksi_out_mitra', TRUE);
+		$this->db->query("
+			ALTER TABLE mst_transaksi_out_mitra 
+    		MODIFY input_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+		");
+		$this->db->query("
+    		ALTER TABLE mst_transaksi_out_mitra 
+    		MODIFY updated_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+		");
+    }
+
 
     public function down()
     {
-        $this->dbforge->drop_table('mst_transaksi_out');
+        $this->dbforge->drop_table('mst_transaksi_out_mitra');
     }
 }

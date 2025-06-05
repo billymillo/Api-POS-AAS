@@ -6,9 +6,8 @@ class ProductApi_model extends CI_Model {
 		$this->db->join('lib_kategori', 'mst_produk.id_kategori_barang = lib_kategori.id', 'left');
 		$this->db->join('lib_tipe', 'mst_produk.id_tipe_barang = lib_tipe.id', 'left');
 		$this->db->join('mst_mitra', 'mst_produk.id_mitra_barang = mst_mitra.id', 'left');
-		$this->db->join('lib_add_on', 'mst_produk.id_add_on = lib_add_on.id', 'left');
 		$this->db->select(
-			'mst_produk.*, lib_kategori.kategori as kategori_name, mst_mitra.nama as mitra_name, lib_tipe.tipe as tipe_name, lib_add_on.add_on as add_on_name'
+			'mst_produk.*, lib_kategori.kategori as kategori_name, mst_mitra.nama as mitra_name, lib_tipe.tipe as tipe_name'
 		);
 		if ($id === null) {
 			$this->db->limit($limit, $offset); 

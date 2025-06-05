@@ -55,17 +55,5 @@ class OpnameApi_model extends CI_Model {
 		$this->db->update('mst_det_opname', $data, ['id' => $id]);
 		return $this->db->affected_rows();
 	}
-	public function getOpnamePem($id = null) {
-		$this->db->where('presence', 1);
-		if ($id === null) {
-			$query = $this->db->get('mst_pembelian_opname')->result_array();
-		} else {
-			$query = $this->db->get_where('mst_pembelian_opname', ['id' => $id])->result_array();
-		}
-		return $query;
-	}
-	public function addOpnamePem($data) {
-		$this->db->insert('mst_pembelian_opname', $data);
-		return $this->db->affected_rows();
-	}
+
 }

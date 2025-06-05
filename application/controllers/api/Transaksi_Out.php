@@ -113,7 +113,7 @@ class Transaksi_Out extends RestController {
 			'id_member' => $this->put('id_member') ?? $transaksi['id_member'],
 			'jumlah_produk' => $this->put('jumlah_produk')  ?? $transaksi['jumlah_produk'],
 			'id_metode_pembayaran' => $this->put('id_metode_pembayaran') ?? $transaksi['id_metode_pembayaran'],
-			'total_transaksi' => $this->put('total_transaksi') + $transaksi['total_transaksi'] ?? $transaksi['total_transaksi'],
+			'total_transaksi' => $this->put('total_transaksi') ?? $transaksi['total_transaksi'],
 			'diskon' => $this->put('diskon') ?? $transaksi['diskon'],
 			'status_transaksi' => $this->put('status_transaksi') ?? $transaksi['status_transaksi'],
 			'potongan_poin' => $this->put('potongan_poin') ?? $transaksi['potongan_poin'],
