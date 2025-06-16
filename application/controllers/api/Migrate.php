@@ -9,7 +9,7 @@ class Migrate extends CI_Controller {
         if ($this->migration->version(24) === FALSE) {
             show_error($this->migration->error_string());
         } else {
-            echo "Migration to version 24 successful!";
+            echo "Migration successful!";
         }
     }
 

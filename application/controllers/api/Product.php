@@ -14,7 +14,7 @@ class Product extends RestController {
 	public function index_get($id = null) {
 		$id = $this->get('id');
 		$page = $this->get('page') ?? 1;  
-		$limit = $this->get('limit') ?? 100;
+		$limit = $this->get('limit') ?? 300;
 		if ($id === null) {
 			$offset = ($page - 1) * $limit;
 			$product = $this->ProductApi_model->getProduct($id, $offset, $limit);
@@ -157,7 +157,7 @@ class Product extends RestController {
 			} else {
 				$this->response([
 					'status' => FALSE,
-					'message' => 'Gagal mengupload gambar: ' . $this->upload->display_errors()
+					'message' => strip_tags($this->upload->display_errors())
 				], RestController::HTTP_BAD_REQUEST);
 				return;
 			}
@@ -229,16 +229,7 @@ class Product extends RestController {
 			'laba' => ($this->put('harga_jual') ?? $product['harga_jual']) - ($this->put('harga_satuan') ?? $product['harga_satuan']),			
 			'updated_date' => date('Y-m-d H:i:s'),
 			'user_update' => $this->input->post('user_update') ?? "system",
-		];
-
-		if (!$data['stok']) {
-			$this->response([
-				'status' => FALSE,
-				'message' => 'Jumlah Stok Harus Diisi'
-			], RestController::HTTP_BAD_REQUEST);
-			return;
-		}
-	
+		];	
 		if ($this->ProductApi_model->editProduct($data, $id) > 0) {
 			$this->response([
 				'status' => TRUE,
@@ -520,7 +511,6 @@ class Product extends RestController {
 	}
 	public function mitra_post() {
 		$this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-		$this->form_validation->set_rules('no_tlp', 'Nomor Telepon', 'required|trim|integer');
 		$this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
 	
 		if ($this->form_validation->run() == FALSE) {
@@ -533,7 +523,7 @@ class Product extends RestController {
 	
 		$data = [
 			'nama' => $this->input->post('nama'),
-			'no_tlp' => $this->input->post('no_tlp'),
+			'no_tlp' => $this->input->post('no_tlp') ?? NULL,
 			'email' => $this->input->post('email') ?? NULL,
 			'bank_rek' => $this->input->post('bank_rek') ?? NULL,
 			'no_rek' => $this->input->post('no_rek') ?? NULL,
